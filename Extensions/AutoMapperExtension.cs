@@ -36,7 +36,15 @@ namespace apicampusjob.Extensions
                 options => options.MapFrom(source => source.MaqhNavigation))
                     .ForMember(destination => destination.Xa,
                 options => options.MapFrom(source => source.Xa)); 
+
             CreateMap<UpsertStudentRequest, StudentDTO>();
+            CreateMap<UpsertCompaniesRequest,CompaniesDTO>();
+            CreateMap<Companies, CompaniesDTO>().ForMember(destination => destination.TP,
+                options => options.MapFrom(source => source.MatpNavigation))
+                    .ForMember(destination => destination.QH,
+                options => options.MapFrom(source => source.MaqhNavigation))
+                    .ForMember(destination => destination.Xa,
+                options => options.MapFrom(source => source.Xa)); ;
 
             
 

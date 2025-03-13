@@ -74,6 +74,7 @@ public partial class DBContext : DbContext
                 .HasColumnName("user_uuid");
             entity.Property(e => e.Uuid)
                 .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
                 .HasColumnName("uuid");
             entity.Property(e => e.Xaid)
                 .HasMaxLength(20)

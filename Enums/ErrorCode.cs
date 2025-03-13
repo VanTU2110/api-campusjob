@@ -35,15 +35,18 @@ namespace apicampusjob.Enums
         EMAIL_NOT_FOUND,
         [Description("Password không đúng")]
         INVALID_CREDENTIALS,
-       
         [Description("Không tìm thấy sinh viên này")]
         STUDENT_NOT_FOUND,
-        [Description("")]
+        [Description("Đã tồn tại thông tin về sinh viên này")]
         STUDENT_ALREADY_EXISTS,
         [Description("Khong tim thay USER")]
         USER_NOT_FOUND,
         [Description("Khong tim thay dia chi nay")]
         ADDRESS_NOT_FOUND,
+        [Description("đã tồn tại thông tin về công ty này")]
+        COMPANY_ALREADY_EXIT,
+        [Description("Không tìm thấy công ty này")]
+        COMPANY_NOT_FOUND,
 
     }
 }

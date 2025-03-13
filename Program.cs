@@ -51,8 +51,10 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IRegionsService, RegionsService>();
-builder.Services.AddScoped<IRegionsRepository, RegionsRepository>();                
+builder.Services.AddScoped<ICompaniesService, CompaniesService>();
 
+builder.Services.AddScoped<ICompaniesRepository, CompaniesRepository>();
+builder.Services.AddScoped<IRegionsRepository, RegionsRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRegionsRepository, RegionsRepository>();
