@@ -1,16 +1,13 @@
-﻿using TaskMonitor.Databases.TM;
+﻿using apicampusjob.Databases.TM;
 
-namespace TaskMonitor.Utils
+namespace apicampusjob.Utils
 {
     public class TokenInfo
     {
         public string Token { get; set; }
-        public string UserName { get; set; }
-        public string AccountUuid { get; set; } = string.Empty;
-
-        public string RoleName { get; set; }
-
-        public string UserUuid { get; set; }
+        public string Email { get; set; }
+        public string UserUuid { get; set; } = string.Empty;
+        public int Role { get; set; }
 
         private DateTime ExpiredDate { get; set; }
 

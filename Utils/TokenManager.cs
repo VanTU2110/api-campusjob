@@ -1,10 +1,10 @@
-﻿namespace TaskMonitor.Utils
+﻿namespace apicampusjob.Utils
 {
     public class TokenManager
     {
         private static readonly Dictionary<string, TokenInfo> TOKEN_MANAGER = new Dictionary<string, TokenInfo>();
         private static SemaphoreSlim mutex = new SemaphoreSlim(1, 1);
-        public static TokenInfo getTokenInfoByUser(string userName)
+        /*public static TokenInfo getTokenInfoByUser(string userName)
         {
             mutex.Wait();
 
@@ -27,8 +27,31 @@
             {
                 mutex.Release();
             }
-        }
+        }*/
+        public static TokenInfo getTokenInfoByEmail(string email)
+        {
+            mutex.Wait();
 
+            try
+            {
+                if (TOKEN_MANAGER.Values != null && TOKEN_MANAGER.Values.Count > 0)
+                {
+                    foreach (var token in TOKEN_MANAGER.Values)
+                    {
+                        if (token.Equals(email))
+                        {
+                            return token;
+                        }
+                    }
+                }
+
+                return null;
+            }
+            finally
+            {
+                mutex.Release();
+            }
+        }
         public static TokenInfo getTokenInfoByToken(string token)
         {
             mutex.Wait();

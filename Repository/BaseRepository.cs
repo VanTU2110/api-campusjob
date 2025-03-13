@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using TaskMonitor.Databases.TM;
-using TaskMonitor.Models.DataInfo;
-using static TaskMonitor.Repository.BaseRepository;
+using apicampusjob.Databases.TM;
+using apicampusjob.Models.DataInfo;
+using static apicampusjob.Repository.BaseRepository;
 
-namespace TaskMonitor.Repository
+namespace apicampusjob.Repository
 {
     public interface IBaseRepository
     {

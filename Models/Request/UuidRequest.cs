@@ -1,7 +1,7 @@
-﻿using TaskMonitor.Models.BaseRequest;
+﻿using apicampusjob.Models.BaseRequest;
 using System.ComponentModel.DataAnnotations;
 
-namespace TaskMonitor.Models.Request
+namespace apicampusjob.Models.Request
 {
     public class UuidRequest : DpsParamBase
     {

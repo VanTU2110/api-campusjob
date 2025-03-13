@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TaskMonitor.Databases.TM;
+namespace apicampusjob.Databases.TM;
 
 public partial class Sessions
 {
@@ -9,7 +9,7 @@ public partial class Sessions
 
     public string Uuid { get; set; } = null!;
 
-    public string AccountUuid { get; set; } = null!;
+    public string UserUuid { get; set; } = null!;
 
     public string? Ip { get; set; }
 
@@ -18,9 +18,9 @@ public partial class Sessions
     public DateTime? TimeLogout { get; set; }
 
     /// <summary>
-    /// 0: LogIn - 1: LogOut
+    /// 0: Login ,1:Logout
     /// </summary>
-    public sbyte Status { get; set; }
+    public sbyte? Status { get; set; }
 
-    public virtual Account AccountUu { get; set; } = null!;
+    public virtual User UserUu { get; set; } = null!;
 }

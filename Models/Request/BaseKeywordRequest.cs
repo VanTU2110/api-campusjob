@@ -1,6 +1,6 @@
-﻿using TaskMonitor.Models.BaseRequest;
+﻿using apicampusjob.Models.BaseRequest;
 
-namespace TaskMonitor.Models.Request
+namespace apicampusjob.Models.Request
 {
     public class BaseKeywordRequest : DpsParamBase
     {

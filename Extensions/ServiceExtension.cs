@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog.Extensions.Logging;
-using TaskMonitor.Databases.TM;
-namespace TaskMonitor.Extensions
+using apicampusjob.Databases.TM;
+namespace apicampusjob.Extensions
 {
     public static class ServiceExtension
     {

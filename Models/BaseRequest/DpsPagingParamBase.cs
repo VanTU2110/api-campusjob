@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TaskMonitor.Models.BaseRequest
+namespace apicampusjob.Models.BaseRequest
 {
     public class DpsPagingParamBase : DpsParamBase
     {

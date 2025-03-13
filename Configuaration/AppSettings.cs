@@ -1,4 +1,4 @@
-﻿namespace TaskMonitor.Configuaration
+﻿namespace apicampusjob.Configuaration
 {
     public class Database
     {

@@ -1,4 +1,4 @@
-﻿namespace TaskMonitor.Models.Request
+﻿namespace apicampusjob.Models.Request
 {
     public class BaseGetCategoryRequest : BaseKeywordRequest
     {

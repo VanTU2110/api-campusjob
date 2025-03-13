@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TaskMonitor.Extensions;
+namespace apicampusjob.Extensions;
 
 public static class AppServiceCollectionExtensions
 {

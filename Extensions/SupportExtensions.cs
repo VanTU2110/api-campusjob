@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
-using TaskMonitor.Enums;
-using TaskMonitor.Models.Response;
-using TaskMonitor.Utils;
+using apicampusjob.Enums;
+using apicampusjob.Models.Response;
+using apicampusjob.Utils;
 
-namespace TaskMonitor.Extensions
+namespace apicampusjob.Extensions
 {
     public static class SupportExtension
     {

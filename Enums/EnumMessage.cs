@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TaskMonitor.Enums
+namespace apicampusjob.Enums
 {
     public class EnumMessage
     {

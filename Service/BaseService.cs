@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using TaskMonitor.Databases.TM;
+using apicampusjob.Databases.TM;
 
-namespace TaskMonitor.Service
+namespace apicampusjob.Service
 {
     public class BaseService
     {

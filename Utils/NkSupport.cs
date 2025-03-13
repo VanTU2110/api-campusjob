@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace TaskMonitor.Utils
+namespace apicampusjob.Utils
 {
     public class NkSupport
     {

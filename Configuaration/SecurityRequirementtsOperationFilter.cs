@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Web.Http;
 
-namespace TaskMonitor.Configuaration
+namespace apicampusjob.Configuaration
 {
     public class SecurityRequirementsOperationFilter : IOperationFilter
     {

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Net;
-using TaskMonitor.Configuaration;
+using apicampusjob.Configuaration;
 
-namespace TaskMonitor.Utils
+namespace apicampusjob.Utils
 {
     public class HttpService
     {

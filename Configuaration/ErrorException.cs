@@ -1,6 +1,6 @@
-﻿using TaskMonitor.Enums;
+﻿using apicampusjob.Enums;
 
-namespace TaskMonitor.Configuaration
+namespace apicampusjob.Configuaration
 {
     public class ErrorException : Exception
     {

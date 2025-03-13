@@ -1,6 +1,6 @@
-﻿using TaskMonitor.Models.Request;
+﻿using apicampusjob.Models.Request;
 
-namespace TaskMonitor.Models.Request
+namespace apicampusjob.Models.Request
 {
     public class UuidPageRequest : BaseKeywordPageRequest
     {

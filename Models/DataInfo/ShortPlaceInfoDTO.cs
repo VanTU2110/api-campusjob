@@ -1,4 +1,4 @@
-﻿namespace TaskMonitor.Models.DataInfo
+﻿namespace apicampusjob.Models.DataInfo
 {
     public class ShortPlaceInfoDTO
     {

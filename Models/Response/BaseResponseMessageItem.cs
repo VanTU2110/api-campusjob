@@ -1,4 +1,4 @@
-﻿namespace TaskMonitor.Models.Response
+﻿namespace apicampusjob.Models.Response
 {
     public class BaseResponseMessageItem<DTO> : BaseResponse
     {

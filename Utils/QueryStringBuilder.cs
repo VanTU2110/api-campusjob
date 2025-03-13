@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace TaskMonitor.Utils
+namespace apicampusjob.Utils
 {
     public class QueryStringBuilder
     {
