@@ -46,15 +46,6 @@ namespace apicampusjob.Extensions
                     .ForMember(destination => destination.Xa,
                 options => options.MapFrom(source => source.Xa)); ;
 
-            
-
-           
-
-          
-
-           
-
-          
 
    
             CreateMap<DevvnTinhthanhpho, CategoryAddressDTO>()
@@ -66,6 +57,30 @@ namespace apicampusjob.Extensions
             CreateMap<DevvnXaphuongthitran, CategoryAddressDTO>()
                 .ForMember(destinaton => destinaton.Name, options => options.MapFrom(source => source.Name))
                  .ForMember(destinaton => destinaton.Code, options => options.MapFrom(source => source.Xaid));
+
+            CreateMap<Job, JobDTO>()
+                .ForMember(destination =>destination.Company,options => options.MapFrom(source => source.CompanyUu))
+                .ForMember(destination => destination.Schedule, options => options.MapFrom(source => source.JobSchedule));
+
+            CreateMap<UpsertJobRequest, JobDTO>();
+
+            CreateMap<Companies, InfoCatalogDTO>()
+                .ForMember(destination => destination.Uuid, options => options.MapFrom(source => source.Uuid))
+                .ForMember(destination => destination.Name, options => options.MapFrom(source => source.Name));
+            CreateMap<JobSchedule, JobScheduleDTO>()
+                 .ForMember(destination => destination.Uuid, options => options.MapFrom(source => source.Uuid))
+                .ForMember(destination => destination.JobUuid, options => options.MapFrom(source => source.JobUuid))
+                .ForMember(destination => destination.DayOfWeek, options => options.MapFrom(source => source.DayOfWeek))
+                .ForMember(destination => destination.StartTime, options => options.MapFrom(source => source.StartTime))
+                .ForMember(destination =>destination.EndTime, options => options.MapFrom(source => source.EndTime));
+
+
+            CreateMap<UpsertScheduleRequest, ScheduleInfoCatalogDTO>();
+
+            CreateMap<JobSchedule, ScheduleInfoCatalogDTO>()
+                .ForMember(destination => destination.Job, options => options.MapFrom(source => source.JobUu));
+            CreateMap<Job, JobInfoCatalogDTO>().ForMember(destination => destination.Company, options => options.MapFrom(source => source.CompanyUu));
+
         }
 
 

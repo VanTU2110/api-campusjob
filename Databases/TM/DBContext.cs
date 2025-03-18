@@ -19,6 +19,10 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<DevvnXaphuongthitran> DevvnXaphuongthitran { get; set; }
 
+    public virtual DbSet<Job> Job { get; set; }
+
+    public virtual DbSet<JobSchedule> JobSchedule { get; set; }
+
     public virtual DbSet<Sessions> Sessions { get; set; }
 
     public virtual DbSet<Student> Student { get; set; }
@@ -187,6 +191,105 @@ public partial class DBContext : DbContext
                 .HasColumnName("type")
                 .UseCollation("utf8mb3_general_ci")
                 .HasCharSet("utf8mb3");
+        });
+
+        modelBuilder.Entity<Job>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("job");
+
+            entity.HasIndex(e => e.CompanyUuid, "FK_job_ref_company");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.CompanyUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("company_uuid");
+            entity.Property(e => e.Created)
+                .HasColumnType("datetime")
+                .HasColumnName("created");
+            entity.Property(e => e.Currency)
+                .HasMaxLength(3)
+                .HasColumnName("currency");
+            entity.Property(e => e.Description)
+                .HasColumnType("text")
+                .HasColumnName("description");
+            entity.Property(e => e.JobType)
+                .HasColumnType("enum('parttime','remote','freelance')")
+                .HasColumnName("job_type");
+            entity.Property(e => e.Requirements)
+                .HasMaxLength(255)
+                .HasColumnName("requirements");
+            entity.Property(e => e.SalaryFixed)
+                .HasPrecision(10, 2)
+                .HasColumnName("salary_fixed");
+            entity.Property(e => e.SalaryMax)
+                .HasPrecision(10, 2)
+                .HasColumnName("salary_max");
+            entity.Property(e => e.SalaryMin)
+                .HasPrecision(10, 2)
+                .HasColumnName("salary_min");
+            entity.Property(e => e.SalaryType)
+                .HasColumnType("enum('hourly','monthly','daily','fixed')")
+                .HasColumnName("salary_type");
+            entity.Property(e => e.Tittle)
+                .HasMaxLength(255)
+                .HasColumnName("tittle");
+            entity.Property(e => e.Updated)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasColumnType("datetime")
+                .HasColumnName("updated");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.CompanyUu).WithMany(p => p.Job)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.CompanyUuid)
+                .HasConstraintName("FK_job_ref_company");
+        });
+
+        modelBuilder.Entity<JobSchedule>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("job_schedule");
+
+            entity.HasIndex(e => e.JobUuid, "FK_jobschedule_ref_job");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.DayOfWeek)
+                .HasColumnType("enum('monday','tuesday','wednesday','thursday','friday','saturday','sunday')")
+                .HasColumnName("day_of_week");
+            entity.Property(e => e.EndTime)
+                .HasColumnType("time")
+                .HasColumnName("end_time");
+            entity.Property(e => e.JobUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("job_uuid");
+            entity.Property(e => e.StartTime)
+                .HasColumnType("time")
+                .HasColumnName("start_time");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.JobUu).WithMany(p => p.JobSchedule)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.JobUuid)
+                .HasConstraintName("FK_jobschedule_ref_job");
         });
 
         modelBuilder.Entity<Sessions>(entity =>

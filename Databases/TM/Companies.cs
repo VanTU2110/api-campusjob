@@ -25,6 +25,8 @@ public partial class Companies
 
     public string Xaid { get; set; } = null!;
 
+    public virtual ICollection<Job> Job { get; set; } = new List<Job>();
+
     public virtual DevvnQuanhuyen MaqhNavigation { get; set; } = null!;
 
     public virtual DevvnTinhthanhpho MatpNavigation { get; set; } = null!;

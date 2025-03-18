@@ -47,6 +47,10 @@ namespace apicampusjob.Enums
         COMPANY_ALREADY_EXIT,
         [Description("Không tìm thấy công ty này")]
         COMPANY_NOT_FOUND,
+        [Description("Khong tim thay cong viec")]
+        JOB_NOT_FOUND,
+        [Description("Khong tim thay danh sach lich lam viec cua cong viec nay")]
+        SCHEDULE_NOT_FOUND
 
     }
 }
