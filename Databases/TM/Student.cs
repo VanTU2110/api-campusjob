@@ -32,9 +32,17 @@ public partial class Student
 
     public string Xaid { get; set; } = null!;
 
+    public virtual ICollection<Applications> Applications { get; set; } = new List<Applications>();
+
     public virtual DevvnQuanhuyen MaqhNavigation { get; set; } = null!;
 
     public virtual DevvnTinhthanhpho MatpNavigation { get; set; } = null!;
+
+    public virtual ICollection<StudentAvailability> StudentAvailability { get; set; } = new List<StudentAvailability>();
+
+    public virtual ICollection<StudentCv> StudentCv { get; set; } = new List<StudentCv>();
+
+    public virtual ICollection<StudentSkill> StudentSkill { get; set; } = new List<StudentSkill>();
 
     public virtual User UserUu { get; set; } = null!;
 

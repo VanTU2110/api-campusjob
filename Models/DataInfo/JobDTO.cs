@@ -3,7 +3,7 @@
     public class JobDTO:BaseDTO
     {
         public InfoCatalogDTO Company {  get; set; }
-        public string Tittle { get; set; } = null!;
+        public string Title { get; set; } = null!;
         public string? Description { get; set; }
         public string JobType { get; set; }
 
@@ -22,5 +22,7 @@
 
         public DateTime? Updated { get; set; }
         public List<JobScheduleDTO> Schedule { get; set; }
+        public List<JobSkillDTO> ListSkill { get; set; } = [];
+
     }
 }

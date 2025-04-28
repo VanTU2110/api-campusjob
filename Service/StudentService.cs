@@ -16,7 +16,8 @@ namespace apicampusjob.Service
     {
         BaseResponse InsertStudent(UpsertStudentRequest student);
         BaseResponse UpdateStudent(UpsertStudentRequest student, TokenInfo token);
-        BaseResponseMessage<StudentDTO> GetDetailStudent(string Useruuid); 
+        BaseResponseMessage<StudentDTO> GetDetailStudent(string Useruuid);
+        BaseResponseMessage<StudentDTO> GetDetailStudentByStudentUuid(string Studentuuid);
     }
     public class StudentService : BaseService, IStudentService
     {
@@ -31,6 +32,19 @@ namespace apicampusjob.Service
         {
             var response = new BaseResponseMessage<StudentDTO>();
             var student = _studentRepository.GetStudentInforByUserUuid(Useruuid);
+            if (student == null)
+            {
+                throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
+            }
+            var detailstudentDTO = _mapper.Map<StudentDTO>(student);
+            response.Data = detailstudentDTO;
+            return response;
+        }
+
+        public BaseResponseMessage<StudentDTO> GetDetailStudentByStudentUuid(string Studentuuid)
+        {
+            var response = new BaseResponseMessage<StudentDTO>();
+            var student = _studentRepository.GetStudentInforByStudentUuid(Studentuuid);
             if (student == null)
             {
                 throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);

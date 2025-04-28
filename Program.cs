@@ -10,6 +10,10 @@ using CloudinaryDotNet.Actions;
 using dotenv.net;
 using DotNetEnv;
 using apicampusjob.Utils;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+
 var builder = WebApplication.CreateBuilder(args);
 
 Env.Load();
@@ -19,6 +23,12 @@ builder.Services.Configure<CloudinarySettings>(options =>
     options.ApiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
     options.ApiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
 });
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+});
+
+
 // Add services to the container.
 var appSettings = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettings);
@@ -44,6 +54,16 @@ builder.Services.AddSwaggerGen(opt =>
     //opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     opt.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
 
 builder.Services.AddAppScopedService();
 
@@ -54,7 +74,18 @@ builder.Services.AddScoped<IRegionsService, RegionsService>();
 builder.Services.AddScoped<ICompaniesService, CompaniesService>();
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IJobScheduleService, JobScheduleService>();
+builder.Services.AddScoped<CloudinaryService>();
+builder.Services.AddScoped<ICVService,CVService>();
+builder.Services.AddScoped<IStudentAvailabilityService, StudentAvailabilityService>();
+builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<IStudentSkillService, StudentSkillService>();
+builder.Services.AddScoped<IJobSkillService, JobSkillService>();
+builder.Services.AddScoped<IApplicationService, ApplicationService>();
+builder.Services.AddScoped<IOtpService, OtpService>();
 
+builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
+builder.Services.AddScoped<IJobSkillRepository, JobSkillRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ICompaniesRepository, CompaniesRepository>();
 builder.Services.AddScoped<IRegionsRepository, RegionsRepository>();
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
@@ -63,8 +94,9 @@ builder.Services.AddScoped<IRegionsRepository, RegionsRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IJobScheduleRepository, JobScheduleRepository>();
-
-
+builder.Services.AddScoped<ICVRepository, CVRepository>();
+builder.Services.AddScoped<IStudentAvailabilityRepository, StudentAvailabilityRepository>();
+builder.Services.AddScoped<IStudentSkillRepository, StudentSkillRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,7 +107,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("AllowAllOrigins");
 app.UseAuthorization();
 
 

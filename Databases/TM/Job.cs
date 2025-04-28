@@ -11,7 +11,7 @@ public partial class Job
 
     public string CompanyUuid { get; set; } = null!;
 
-    public string Tittle { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
     public string? Description { get; set; }
 
@@ -33,7 +33,11 @@ public partial class Job
 
     public DateTime? Updated { get; set; }
 
+    public virtual ICollection<Applications> Applications { get; set; } = new List<Applications>();
+
     public virtual Companies CompanyUu { get; set; } = null!;
 
     public virtual ICollection<JobSchedule> JobSchedule { get; set; } = new List<JobSchedule>();
+
+    public virtual ICollection<JobSkill> JobSkill { get; set; } = new List<JobSkill>();
 }

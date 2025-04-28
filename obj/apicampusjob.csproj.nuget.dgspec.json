@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CampusJob\\apicampusjob\\apicampusjob.csproj": {}
+    "D:\\campusjob-project\\CampusJob\\apicampusjob\\apicampusjob.csproj": {}
   },
   "projects": {
-    "D:\\CampusJob\\apicampusjob\\apicampusjob.csproj": {
+    "D:\\campusjob-project\\CampusJob\\apicampusjob\\apicampusjob.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CampusJob\\apicampusjob\\apicampusjob.csproj",
+        "projectUniqueName": "D:\\campusjob-project\\CampusJob\\apicampusjob\\apicampusjob.csproj",
         "projectName": "apicampusjob",
-        "projectPath": "D:\\CampusJob\\apicampusjob\\apicampusjob.csproj",
+        "projectPath": "D:\\campusjob-project\\CampusJob\\apicampusjob\\apicampusjob.csproj",
         "packagesPath": "C:\\Users\\PhamVanTu\\.nuget\\packages\\",
-        "outputPath": "D:\\CampusJob\\apicampusjob\\obj\\",
+        "outputPath": "D:\\campusjob-project\\CampusJob\\apicampusjob\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PhamVanTu\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -51,7 +51,7 @@
             },
             "CloudinaryDotNet": {
               "target": "Package",
-              "version": "[1.27.1, )"
+              "version": "[1.27.5, )"
             },
             "DotNetEnv": {
               "target": "Package",
@@ -68,6 +68,10 @@
             "MQTTnet": {
               "target": "Package",
               "version": "[4.3.6.1152, )"
+            },
+            "Microsoft.AspNet.SignalR": {
+              "target": "Package",
+              "version": "[2.4.3, )"
             },
             "Microsoft.AspNet.WebApi.Core": {
               "target": "Package",
@@ -136,6 +140,10 @@
             "System.Security.Cryptography.Primitives": {
               "target": "Package",
               "version": "[4.3.0, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[9.0.4, )"
             },
             "dotenv.net": {
               "target": "Package",

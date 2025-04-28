@@ -11,6 +11,8 @@ public partial class DBContext : DbContext
     {
     }
 
+    public virtual DbSet<Applications> Applications { get; set; }
+
     public virtual DbSet<Companies> Companies { get; set; }
 
     public virtual DbSet<DevvnQuanhuyen> DevvnQuanhuyen { get; set; }
@@ -23,9 +25,19 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<JobSchedule> JobSchedule { get; set; }
 
+    public virtual DbSet<JobSkill> JobSkill { get; set; }
+
     public virtual DbSet<Sessions> Sessions { get; set; }
 
+    public virtual DbSet<Skills> Skills { get; set; }
+
     public virtual DbSet<Student> Student { get; set; }
+
+    public virtual DbSet<StudentAvailability> StudentAvailability { get; set; }
+
+    public virtual DbSet<StudentCv> StudentCv { get; set; }
+
+    public virtual DbSet<StudentSkill> StudentSkill { get; set; }
 
     public virtual DbSet<User> User { get; set; }
 
@@ -34,6 +46,65 @@ public partial class DBContext : DbContext
         modelBuilder
             .UseCollation("utf8mb4_unicode_520_ci")
             .HasCharSet("utf8mb4");
+
+        modelBuilder.Entity<Applications>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("applications");
+
+            entity.HasIndex(e => e.JobUuid, "FK_applications_ref_job");
+
+            entity.HasIndex(e => new { e.StudentUuid, e.JobUuid }, "unq_student_job").IsUnique();
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.AppliedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasColumnType("datetime")
+                .HasColumnName("applied_at");
+            entity.Property(e => e.CoverLeter).HasColumnName("cover_leter");
+            entity.Property(e => e.IsActive)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1: active 0: lock")
+                .HasColumnName("is_active");
+            entity.Property(e => e.JobUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("job_uuid");
+            entity.Property(e => e.Note)
+                .HasColumnType("text")
+                .HasColumnName("note");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'pending'")
+                .HasColumnType("enum('pending','interviewing','accepted','rejected','cancelled','hired')")
+                .HasColumnName("status");
+            entity.Property(e => e.StudentUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("student_uuid");
+            entity.Property(e => e.UpdatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.JobUu).WithMany(p => p.Applications)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.JobUuid)
+                .HasConstraintName("FK_applications_ref_job");
+
+            entity.HasOne(d => d.StudentUu).WithMany(p => p.Applications)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.StudentUuid)
+                .HasConstraintName("FK_appications_ref_student");
+        });
 
         modelBuilder.Entity<Companies>(entity =>
         {
@@ -216,15 +287,11 @@ public partial class DBContext : DbContext
             entity.Property(e => e.Currency)
                 .HasMaxLength(3)
                 .HasColumnName("currency");
-            entity.Property(e => e.Description)
-                .HasColumnType("text")
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.JobType)
                 .HasColumnType("enum('parttime','remote','freelance')")
                 .HasColumnName("job_type");
-            entity.Property(e => e.Requirements)
-                .HasMaxLength(255)
-                .HasColumnName("requirements");
+            entity.Property(e => e.Requirements).HasColumnName("requirements");
             entity.Property(e => e.SalaryFixed)
                 .HasPrecision(10, 2)
                 .HasColumnName("salary_fixed");
@@ -237,9 +304,9 @@ public partial class DBContext : DbContext
             entity.Property(e => e.SalaryType)
                 .HasColumnType("enum('hourly','monthly','daily','fixed')")
                 .HasColumnName("salary_type");
-            entity.Property(e => e.Tittle)
+            entity.Property(e => e.Title)
                 .HasMaxLength(255)
-                .HasColumnName("tittle");
+                .HasColumnName("title");
             entity.Property(e => e.Updated)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasColumnType("datetime")
@@ -292,6 +359,47 @@ public partial class DBContext : DbContext
                 .HasConstraintName("FK_jobschedule_ref_job");
         });
 
+        modelBuilder.Entity<JobSkill>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("job_skill");
+
+            entity.HasIndex(e => e.JobUuid, "FK_jobskill_ref_job");
+
+            entity.HasIndex(e => e.SkillUuid, "FK_jobskill_ref_skill");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.JobUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("job_uuid");
+            entity.Property(e => e.SkillUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("skill_uuid");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.JobUu).WithMany(p => p.JobSkill)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.JobUuid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_jobskill_ref_job");
+
+            entity.HasOne(d => d.SkillUu).WithMany(p => p.JobSkill)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.SkillUuid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_jobskill_ref_skill");
+        });
+
         modelBuilder.Entity<Sessions>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -335,6 +443,26 @@ public partial class DBContext : DbContext
                 .HasPrincipalKey(p => p.Uuid)
                 .HasForeignKey(d => d.UserUuid)
                 .HasConstraintName("sessions_ibfk_1");
+        });
+
+        modelBuilder.Entity<Skills>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("skills");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .HasColumnName("name");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
         });
 
         modelBuilder.Entity<Student>(entity =>
@@ -409,6 +537,130 @@ public partial class DBContext : DbContext
                 .HasConstraintName("FK_student_ref_xa");
         });
 
+        modelBuilder.Entity<StudentAvailability>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("student_availability");
+
+            entity.HasIndex(e => e.StudentUuid, "FK_studentavailability_ref_student");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.DayOfWeek)
+                .HasColumnType("enum('monday','tuesday','wednesday','thursday','friday','saturday','sunday')")
+                .HasColumnName("day_of_week");
+            entity.Property(e => e.EndTime)
+                .HasColumnType("time")
+                .HasColumnName("end_time");
+            entity.Property(e => e.StartTime)
+                .HasColumnType("time")
+                .HasColumnName("start_time");
+            entity.Property(e => e.StudentUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("student_uuid");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.StudentUu).WithMany(p => p.StudentAvailability)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.StudentUuid)
+                .HasConstraintName("FK_studentavailability_ref_student");
+        });
+
+        modelBuilder.Entity<StudentCv>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("student_cv");
+
+            entity.HasIndex(e => e.StudentUuid, "FK_cv_ref_student");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.CloudinaryPublicId)
+                .HasMaxLength(255)
+                .HasColumnName("cloudinary_public_id");
+            entity.Property(e => e.StudentUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("student_uuid");
+            entity.Property(e => e.UploadAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("'0000-00-00 00:00:00'")
+                .HasColumnType("datetime")
+                .HasColumnName("upload_at");
+            entity.Property(e => e.Url)
+                .HasColumnType("text")
+                .HasColumnName("url");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.StudentUu).WithMany(p => p.StudentCv)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.StudentUuid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_cv_ref_student");
+        });
+
+        modelBuilder.Entity<StudentSkill>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("student_skill");
+
+            entity.HasIndex(e => e.SkillUuid, "FK_studentskill_ref_skill");
+
+            entity.HasIndex(e => e.StudentUuid, "FK_studentskill_ref_student");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Proficiency)
+                .HasDefaultValueSql("'beginner'")
+                .HasColumnType("enum('beginner','intermediate','advanced','expert')")
+                .HasColumnName("proficiency");
+            entity.Property(e => e.SkillUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("skill_uuid");
+            entity.Property(e => e.Status)
+                .HasComment("0: hoạt động, 1 khóa")
+                .HasColumnType("tinyint(2)")
+                .HasColumnName("status");
+            entity.Property(e => e.StudentUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("student_uuid");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.SkillUu).WithMany(p => p.StudentSkill)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.SkillUuid)
+                .HasConstraintName("FK_studentskill_ref_skill");
+
+            entity.HasOne(d => d.StudentUu).WithMany(p => p.StudentSkill)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.StudentUuid)
+                .HasConstraintName("FK_studentskill_ref_student");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -427,11 +679,14 @@ public partial class DBContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(255)
                 .HasColumnName("email");
+            entity.Property(e => e.IsVerify)
+                .HasDefaultValueSql("'0'")
+                .HasColumnName("isVerify");
             entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("password");
             entity.Property(e => e.Role)
-                .HasComment("0-sinh vien 1-nha tuyen dung(cty)")
+                .HasComment("0-sinh vien 1-nha tuyen dung(cty)-3 admin")
                 .HasColumnType("tinyint(2)")
                 .HasColumnName("role");
             entity.Property(e => e.Status)

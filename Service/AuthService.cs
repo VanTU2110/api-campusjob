@@ -18,18 +18,21 @@ namespace apicampusjob.Service
         BaseResponse RegisterCompany(RegisterAccountRequest request);
 
         BaseResponseMessage<LogInResp> Login(LogInRequest request);
-        }
-   
-        public class AuthService : BaseService, IAuthService
+        BaseResponse VerifyUser(VerifyUserRequest request);
+    }
+
+    public class AuthService : BaseService, IAuthService
         {
             private readonly IUserRepository _userRepository;
             private readonly ISessionRepository _sessionRepository;
-            public AuthService(DBContext dbContext, IMapper mapper, IConfiguration configuration, ISessionRepository sessionRepository, IUserRepository userRepository) : base(dbContext, mapper, configuration)
-            {
-                _userRepository = userRepository;
-                _sessionRepository = sessionRepository;
-            }
-            private LogInResp CheckInfor(LogInRequest request)
+        private readonly IOtpService _otpService;
+        public AuthService(DBContext dbContext, IMapper mapper, IConfiguration configuration, ISessionRepository sessionRepository, IUserRepository userRepository, IOtpService otpService) : base(dbContext, mapper, configuration)
+        {
+            _userRepository = userRepository;
+            _sessionRepository = sessionRepository;
+            _otpService = otpService;
+        }
+        private LogInResp CheckInfor(LogInRequest request)
             {
                 var loginResp = new LogInResp();
                 var acc = _userRepository.GetUserByEmail(request.Email);
@@ -163,5 +166,26 @@ namespace apicampusjob.Service
 
                 return response;
             }
+
+        public BaseResponse VerifyUser(VerifyUserRequest request)
+        {
+            var response = new BaseResponse();
+
+            // Kiểm tra người dùng tồn tại không
+            var user = _userRepository.GetUserByEmail(request.Email);
+            if (user == null)
+            {
+                throw new ErrorException(ErrorCode.ACCOUNT_NOTFOUND);
+            }
+
+            // Kiểm tra và xác thực OTP
+            _otpService.VerifyOtpAsync(request.Email, request.Otp).Wait();
+
+            // Cập nhật trạng thái người dùng thành đã xác thực
+            user.IsVerify = true;
+            _userRepository.UpdateItem(user);
+
+            return response;
         }
+    }
 }

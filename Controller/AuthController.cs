@@ -81,5 +81,12 @@ namespace apicampusjob.Controller
                 return StatusCode(500, response);
             }
         }
+        // Xác thực người dùng (verify)
+        [HttpPost("verify-user")]
+        public IActionResult VerifyUser([FromBody] VerifyUserRequest request)
+        {
+            var response = _authservice.VerifyUser(request);
+            return Ok(response);
+        }
     }
 }

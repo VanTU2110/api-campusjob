@@ -45,6 +45,17 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
+        [HttpPost("detail-student-by-studentuuid")]
+        [DbpCert]
+        [SwaggerResponse(statusCode: 200, type: typeof(BaseResponseMessage<StudentDTO>), description: "DetailStudent Response")]
+        public async Task<IActionResult> DetailStudentbyStudentUuid([FromBody] UuidRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentService.GetDetailStudentByStudentUuid(request.Uuid);
+                return Ok(response);
+            }, _context);
+        }
 
         /// <summary>
         /// Cập nhật thông tin Student

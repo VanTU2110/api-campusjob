@@ -34,23 +34,22 @@ namespace apicampusjob.Enums
             UPDATE,
             DELETE
         }
-        public enum edStatusOrder
-        {
-            [Description("Chờ xử lí")]
-            PENDING = 0,
-            [Description("Đang xử lí")]
-            PROCESSING = 1,
-            [Description("Vận chuyển")]
-            SHIP = 2,
-            [Description("Đã thanh toán")]
-            PAID = 3,
-        }
+      
         public enum edStatusType
         {
             [Description("Bị khóa")]
             LOCK = 0,
             [Description("Đang hoạt động")]
             ACTIVE,
+        }
+        public enum ApplicationStatus
+        {
+            Pending,
+            Interviewing,
+            Accepted,
+            Rejected,
+            Cancelled,
+            Hired
         }
     }
 }

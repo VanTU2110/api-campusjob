@@ -23,6 +23,8 @@ namespace apicampusjob.Repository
             return _dbContext.Job
                 .Include(x => x.CompanyUu)
                  .Include(x => x.JobSchedule)
+                 .Include(x =>x.JobSkill)
+                 .ThenInclude(x=>x.SkillUu)
                  .FirstOrDefault(x=>x.Uuid == uuid);
 
         }
@@ -32,11 +34,15 @@ namespace apicampusjob.Repository
             return _dbContext.Job
                  .Include(x => x.CompanyUu)
                  .Include(x => x.JobSchedule)
+                 .Include(x => x.JobSkill)
+                 .ThenInclude(x => x.SkillUu)
                  .Where(x =>
                     (request.SalaryMin == null || x.SalaryMin >= request.SalaryMin) &&
                     (request.SalaryMax == null || x.SalaryMax <= request.SalaryMax) &&
                     (request.SalaryFixed == null || x.SalaryFixed >= request.SalaryFixed))
-                 .Where(x => string.IsNullOrEmpty(request.Keyword) || x.Tittle.Contains(request.Keyword))
+                 .Where(x => string.IsNullOrEmpty(request.Keyword) || x.Title.Contains(request.Keyword))
+                 .Where(x => string.IsNullOrEmpty(request.CompanyUuid) || x.CompanyUuid == request.CompanyUuid)
+                 .Where(x => string.IsNullOrEmpty(request.SalaryType) || x.SalaryType == request.SalaryType)
                  .Where(x=>string.IsNullOrEmpty(request.JobType) || x.JobType == request.JobType).ToList();
         }
     }

@@ -1,0 +1,31 @@
+﻿using apicampusjob.AttributeExtend;
+using apicampusjob.Controllers;
+using apicampusjob.Databases.TM;
+using apicampusjob.Models.Request;
+using apicampusjob.Service;
+using Microsoft.AspNetCore.Mvc;
+
+namespace apicampusjob.Controller
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [DbpCert]
+    public class StudentSkillController(IStudentSkillService studentSkillService) : BaseController
+    {
+        private readonly IStudentSkillService _studentSkillService= studentSkillService;
+        private readonly DBContext _context;
+        /// <summary>
+        /// Thêm mới kỹ năng
+        /// </summary>
+        [HttpPost("create-student-skill")]
+        [DbpCert]
+        public IActionResult AddStudentSkill([FromBody] UpsertStudentSkillRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentSkillService.InsertStudentSkill(request);
+                return Ok(response);
+            }, _context);
+        }
+    }
+}

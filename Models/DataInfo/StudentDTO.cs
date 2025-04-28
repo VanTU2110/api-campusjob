@@ -14,6 +14,8 @@
         public InfoCatalogDTO TP { get; set; } = null!;
         public InfoCatalogDTO QH { get; set; } = null!;
         public InfoCatalogDTO Xa { get; set; } = null!;
+        public List<StudentAvailabilityDTO> Availabilities { get; set; } = [];
+        public List<StudentSkillDTO> ListSkill { get; set; } = [];
 
     }
 

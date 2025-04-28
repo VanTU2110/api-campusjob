@@ -18,6 +18,8 @@ namespace apicampusjob.Extensions
                 o.EnableDetailedErrors();
                 o.EnableSensitiveDataLogging();
                 o.UseLoggerFactory(LogLoggerFactory);
+                o.LogTo(Console.WriteLine, LogLevel.Information); // ⚠️ Thêm dòng này để log SQL
+                   o.EnableSensitiveDataLogging(); 
             });
         }
         public static DBContext GetDbContext()

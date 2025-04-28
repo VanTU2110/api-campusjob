@@ -14,9 +14,11 @@ public partial class User
     public string Password { get; set; } = null!;
 
     /// <summary>
-    /// 0-sinh vien 1-nha tuyen dung(cty)
+    /// 0-sinh vien 1-nha tuyen dung(cty)-3 admin
     /// </summary>
     public sbyte Role { get; set; }
+
+    public bool? IsVerify { get; set; }
 
     /// <summary>
     /// 0-Khóa, 1-Đang hoạt động

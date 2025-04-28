@@ -5,3 +5,5 @@
 /apicompusjob.sln
 .vs/
 .env 
+.bin
+.appsetting.json

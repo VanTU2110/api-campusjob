@@ -9,7 +9,7 @@ namespace apicampusjob.Enums
         [Description("Token Invalid")] TOKEN_INVALID = 2,
         [Description("System error")] SYSTEM_ERROR = 3,
         [Description("Database failed")] DB_FAILED = 4,
-
+        [Description("Xung đột dữ liệu")] CONFLICT =302,
         [Description("Thư mục chứa ảnh chưa được cấu hình")]
         FOLDER_IMAGE_NOT_FOUND = 5,
 
@@ -50,7 +50,20 @@ namespace apicampusjob.Enums
         [Description("Khong tim thay cong viec")]
         JOB_NOT_FOUND,
         [Description("Khong tim thay danh sach lich lam viec cua cong viec nay")]
-        SCHEDULE_NOT_FOUND
-
+        SCHEDULE_NOT_FOUND,
+        [Description("Khong tim thay CV")]
+        CV_NOT_FOUND,
+        [Description("Khong tim thay lich ranh")]
+        AVAILABLITY_NOT_FOUND,
+        [Description("Khong tim thay ki nang")]
+        SKILL_NOT_FOUND,
+        [Description("Ứng tuyển không tồn tại")]
+        APPLICATION_NOT_FOUND,
+        [Description("Trạng thái không hợp lệ.")]
+        INVALID_STATUS_TRANSITION,
+        [Description("Trạng thái hiện tại không hợp lệ trong hệ thống.")]
+        INVALID_APPLICATION_STATUS,
+        [Description("Khong the cap nhat trang thai")]
+        CANNOT_CANCEL_APPLICATION
     }
 }

@@ -72,7 +72,7 @@ namespace apicampusjob.Service
             var newJob = new Job
             {
                 CompanyUuid = request.CompanyUuid,
-                Tittle = request.Title,
+                Title = request.Title,
                 Description = request.Description,
                 JobType = request.JobType,
                 SalaryType = request.SalaryType,
@@ -100,12 +100,12 @@ namespace apicampusjob.Service
             {
                 throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
             }
-            if(_companiesRepository.GetCompaniesInforbyUuid(request.Uuid) == null)
+            if(_companiesRepository.GetCompaniesInforbyUuid(request.CompanyUuid) == null)
             {
                 throw new ErrorException(ErrorCode.COMPANY_NOT_FOUND);
             }
             oldJob.CompanyUuid = request.CompanyUuid;
-            oldJob.Tittle = request.Title;
+            oldJob.Title = request.Title;
             oldJob.Description = request.Description;
             oldJob.JobType = request.JobType;
             oldJob.SalaryType = request.SalaryType;

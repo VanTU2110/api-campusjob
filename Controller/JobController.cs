@@ -23,11 +23,15 @@ namespace apicampusjob.Controller
         /// Lấy danh sách công việc có phân trang
         /// </summary>
         [HttpPost("get-list-page-job")]
+        [DbpCert]
         [SwaggerResponse(statusCode: 200, type: typeof(BaseResponseMessagePage<JobDTO>), description: "GetPageListJob Response")]
         public async Task<IActionResult> GetPageListJob([FromBody] GetPageListJobRequest request)
         {
-            var response = _jobService.GetPageListJob(request);
-            return Ok(response);
+            return ProcessRequest((token) =>
+            {
+                var response = _jobService.GetPageListJob(request);
+                return Ok(response);
+            }, _context);
         }
 
         /// <summary>
