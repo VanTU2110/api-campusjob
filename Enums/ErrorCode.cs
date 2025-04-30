@@ -64,6 +64,7 @@ namespace apicampusjob.Enums
         [Description("Trạng thái hiện tại không hợp lệ trong hệ thống.")]
         INVALID_APPLICATION_STATUS,
         [Description("Khong the cap nhat trang thai")]
-        CANNOT_CANCEL_APPLICATION
+        CANNOT_CANCEL_APPLICATION,
+        CONVERSATION_NOT_FOUND
     }
 }

@@ -34,6 +34,8 @@ public partial class Student
 
     public virtual ICollection<Applications> Applications { get; set; } = new List<Applications>();
 
+    public virtual ICollection<Conversations> Conversations { get; set; } = new List<Conversations>();
+
     public virtual DevvnQuanhuyen MaqhNavigation { get; set; } = null!;
 
     public virtual DevvnTinhthanhpho MatpNavigation { get; set; } = null!;

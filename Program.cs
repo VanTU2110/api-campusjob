@@ -13,6 +13,7 @@ using apicampusjob.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using apicampusjob.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,7 +67,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddAppScopedService();
-
+builder.Services.AddSignalR(); // trong phần cấu hình dịch vụ
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
@@ -82,6 +83,10 @@ builder.Services.AddScoped<IStudentSkillService, StudentSkillService>();
 builder.Services.AddScoped<IJobSkillService, JobSkillService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
+builder.Services.AddScoped<IConversationService, ConversationService>();
 
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IJobSkillRepository, JobSkillRepository>();
@@ -110,7 +115,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 app.UseAuthorization();
 
-
+app.MapHub<ChatHub>("/chatHub");
 app.MapControllers();
 
 app.Run();

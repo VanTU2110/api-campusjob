@@ -15,6 +15,8 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<Companies> Companies { get; set; }
 
+    public virtual DbSet<Conversations> Conversations { get; set; }
+
     public virtual DbSet<DevvnQuanhuyen> DevvnQuanhuyen { get; set; }
 
     public virtual DbSet<DevvnTinhthanhpho> DevvnTinhthanhpho { get; set; }
@@ -26,6 +28,8 @@ public partial class DBContext : DbContext
     public virtual DbSet<JobSchedule> JobSchedule { get; set; }
 
     public virtual DbSet<JobSkill> JobSkill { get; set; }
+
+    public virtual DbSet<Messages> Messages { get; set; }
 
     public virtual DbSet<Sessions> Sessions { get; set; }
 
@@ -171,6 +175,49 @@ public partial class DBContext : DbContext
             entity.HasOne(d => d.Xa).WithMany(p => p.Companies)
                 .HasForeignKey(d => d.Xaid)
                 .HasConstraintName("FK_company_ref_xa");
+        });
+
+        modelBuilder.Entity<Conversations>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("conversations");
+
+            entity.HasIndex(e => e.CompanyUuid, "FK_converstation_ref_company");
+
+            entity.HasIndex(e => new { e.StudentUuid, e.CompanyUuid }, "unq_student_company").IsUnique();
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.CompanyUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("company_uuid");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.StudentUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("student_uuid");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.CompanyUu).WithMany(p => p.Conversations)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.CompanyUuid)
+                .HasConstraintName("FK_converstation_ref_company");
+
+            entity.HasOne(d => d.StudentUu).WithMany(p => p.Conversations)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.StudentUuid)
+                .HasConstraintName("FK_converstation_ref_");
         });
 
         modelBuilder.Entity<DevvnQuanhuyen>(entity =>
@@ -398,6 +445,47 @@ public partial class DBContext : DbContext
                 .HasForeignKey(d => d.SkillUuid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_jobskill_ref_skill");
+        });
+
+        modelBuilder.Entity<Messages>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("messages");
+
+            entity.HasIndex(e => e.ConversationUuid, "FK_message_ref_convrsations");
+
+            entity.HasIndex(e => e.Uuid, "unq_uuid").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Content)
+                .HasMaxLength(255)
+                .HasColumnName("content");
+            entity.Property(e => e.ConversationUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("conversation_uuid");
+            entity.Property(e => e.IsRead).HasColumnName("isRead");
+            entity.Property(e => e.SendAt)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("datetime")
+                .HasColumnName("send_at");
+            entity.Property(e => e.SenderUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("sender_uuid");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+
+            entity.HasOne(d => d.ConversationUu).WithMany(p => p.Messages)
+                .HasPrincipalKey(p => p.Uuid)
+                .HasForeignKey(d => d.ConversationUuid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_message_ref_convrsations");
         });
 
         modelBuilder.Entity<Sessions>(entity =>

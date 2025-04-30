@@ -118,6 +118,11 @@ namespace apicampusjob.Extensions
             CreateMap<ApplyJobRequest, ApplicationDTO>().ForMember(destination => destination.CoverLetter,
                 options => options.MapFrom(source => source.CoverLetter));
 
+            CreateMap<CreateConversationRequest, ConversationDTO>();
+            CreateMap<Conversations, ConversationDTO>();
+            CreateMap<SendMessageRequest, MessageDTO>();
+            CreateMap<Messages,MessageDTO>();
+
         }
 
     }
