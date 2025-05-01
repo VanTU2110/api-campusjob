@@ -15,6 +15,8 @@ namespace apicampusjob.Service
         BaseResponse InsertCompanies(UpsertCompaniesRequest company);
         BaseResponse UpdateCompanies(UpsertCompaniesRequest company, TokenInfo token);
         BaseResponseMessage<CompaniesDTO> GetDetailCompanies(string Useruuid);
+        BaseResponseMessage<CompaniesDTO> GetDetailCompaniesbyCompanyUuid(string companyUuid);
+
     }
     public class CompaniesService : BaseService, ICompaniesService
     {
@@ -32,7 +34,20 @@ namespace apicampusjob.Service
             var company = _companiesRepository.GetCompaniesInforByUserUuid(Useruuid);
             if (company == null)
             {
-                throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
+                throw new ErrorException(ErrorCode.COMPANY_NOT_FOUND);
+            }
+            var detailcompanyDTO = _mapper.Map<CompaniesDTO>(company);
+            response.Data = detailcompanyDTO;
+            return response;
+        }
+
+        public BaseResponseMessage<CompaniesDTO> GetDetailCompaniesbyCompanyUuid(string companyUuid)
+        {
+            var response = new BaseResponseMessage<CompaniesDTO>();
+            var company = _companiesRepository.GetCompaniesInforbyUuid(companyUuid);
+            if (company == null)
+            {
+                throw new ErrorException(ErrorCode.COMPANY_NOT_FOUND);
             }
             var detailcompanyDTO = _mapper.Map<CompaniesDTO>(company);
             response.Data = detailcompanyDTO;

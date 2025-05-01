@@ -47,7 +47,17 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
-
+        [HttpPost("detail-company-by-uuid")]
+        [DbpCert]
+        [SwaggerResponse(statusCode: 200, type: typeof(BaseResponseMessage<CompaniesDTO>), description: "DetailCompany Response")]
+        public async Task<IActionResult> DetailCompanybyCompanyUuid([FromBody] GetDetailCompaniesbyCompanyUuid request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _companyService.GetDetailCompaniesbyCompanyUuid(request.CompanyUuid);
+                return Ok(response);
+            }, _context);
+        }
         /// <summary>
         /// Cập nhật thông tin Company
         /// </summary>

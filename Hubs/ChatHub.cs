@@ -8,7 +8,7 @@ namespace apicampusjob.Hubs
         {
             await Clients.Group(ConversationUuid.ToString()).SendAsync("ReceiveMessage", new
             {
-                ConversationUuid = ConversationUuid,
+                conversationUuid = ConversationUuid,
                 senderUuid = senderUuid,
                 Content = content,
                 SentAt = DateTime.UtcNow
