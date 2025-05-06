@@ -14,6 +14,7 @@ namespace apicampusjob.Service
     {
         public interface IUserService
         {
+            User UpdateStatus(string uuid);
             BaseResponseMessage<UserDTO> GetDetailUserByUuid(string uuid);
             BaseResponseMessage<UserDTO> GetDetailUserByEmail(string email);
         }
@@ -55,7 +56,22 @@ namespace apicampusjob.Service
                 response.Data = detailUserDTO;
                 return response;
             }
-            
+
+            public User UpdateStatus(string uuid)
+            {
+                return ExecuteInTransaction(() =>
+                {
+                    var user = _userRepository.GetUserByUuid(uuid);
+                    if (user == null)
+                    {
+                        throw new ErrorException(ErrorCode.USER_NOT_FOUND);
+                    }
+
+                    user.Status = (sbyte)(user.Status == 1 ? 0 : 1);
+
+                    return _userRepository.UpdateItem(user);
+                });
+            }
         }
     }
 }

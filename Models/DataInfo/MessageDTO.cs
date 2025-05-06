@@ -4,6 +4,6 @@
     {
         public string Content { get; set; }
         public string SenderUuid { get; set; }
-        public DateTime SentAt { get; set; }
+        public DateTime SendAt { get; set; }
     }
 }

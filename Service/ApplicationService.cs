@@ -16,6 +16,7 @@ namespace apicampusjob.Service
         BaseResponse ApplyJob(ApplyJobRequest request);
         BaseResponse CancellationofApplication(CancellationofApplicationRquest request);
         BaseResponse UpdateStatus(UpdateStatusRequest request );
+        BaseResponse UpdateNote(AddNoteToApplicationRequest request);
         BaseResponseMessagePage<ApplicationDTO> GetPageListApplyByJobUuid(GetPageListApplyByJobUuid request);
         BaseResponseMessagePage<ApplicationDTO> GetPageListApplyByStudentUuid(GetPageListApplyByStudentUuid request);
     }
@@ -168,6 +169,26 @@ namespace apicampusjob.Service
                 return new BaseResponseMessage<ApplicationDTO>
                 {
                     Data = _mapper.Map<ApplicationDTO>(updatedApplication)
+                };
+            });
+        }
+
+        public BaseResponse UpdateNote(AddNoteToApplicationRequest request)
+        {
+            var application = _applicationRepository.GetApplicationsByUuid(request.Uuid);
+            if (application == null)
+            {
+                throw new ErrorException(ErrorCode.APPLICATION_NOT_FOUND);
+            }
+
+            application.Note = request.Note;
+            application.UpdatedAt = DateTime.UtcNow;
+            return ExecuteInTransaction(() =>
+            {
+                var updateNote = _applicationRepository.UpdateItem(application);
+                return new BaseResponseMessage<ApplicationDTO>
+                {
+                    Data = _mapper.Map<ApplicationDTO>(updateNote)
                 };
             });
         }

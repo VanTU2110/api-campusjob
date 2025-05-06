@@ -2,9 +2,9 @@
 {
     public class UpsertStudentAvailability: UuidRequest
     {
-        public string Student_Uuid { get; set; }
-        public string Day_of_week { get; set; }
-        public TimeOnly Start_time { get; set; }
-        public TimeOnly End_time { get; set; }
+        public string studentUuid { get; set; }
+        public string dayOfWeek { get; set; }
+        public TimeOnly startTime { get; set; }
+        public TimeOnly endTime { get; set; }
     }
 }

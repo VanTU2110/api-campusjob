@@ -1,7 +1,9 @@
-﻿namespace apicampusjob.Models.Request
+﻿using apicampusjob.Models.BaseRequest;
+
+namespace apicampusjob.Models.Request
 {
-    public class GetAvailabilityByStudenUuid:BaseKeywordRequest
+    public class GetAvailabilityByStudenUuid:DpsParamBase
     {
-        public string Student_Uuid { get; set; }
+        public string studentUuid { get; set; }
     }
 }

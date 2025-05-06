@@ -11,7 +11,7 @@ namespace apicampusjob.Hubs
                 conversationUuid = ConversationUuid,
                 senderUuid = senderUuid,
                 Content = content,
-                SentAt = DateTime.UtcNow
+                sendAt = DateTime.UtcNow
             });
         }
 

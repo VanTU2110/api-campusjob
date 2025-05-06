@@ -25,6 +25,8 @@ namespace apicampusjob.Enums
         INVALID_PASS = 24,
         [Description("Tài khoản không tồn tại. Vui lòng kiểm tra lại")]
         ACCOUNT_NOTFOUND = 25,
+        [Description("Tài khoản đã bị khóa. Vui lòng liên hệ Admin để biết thêm chi tiết")]
+        ACCOUNT_LOCKED = 23,
         [Description("Email không hợp lệ ")]
         EMAIL_NOT_VALIDATOR,
         [Description("Mật khẩu không hợp lệ ")]
@@ -65,6 +67,7 @@ namespace apicampusjob.Enums
         INVALID_APPLICATION_STATUS,
         [Description("Khong the cap nhat trang thai")]
         CANNOT_CANCEL_APPLICATION,
-        CONVERSATION_NOT_FOUND
+        CONVERSATION_NOT_FOUND,
+        
     }
 }

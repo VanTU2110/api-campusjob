@@ -55,22 +55,22 @@ builder.Services.AddSwaggerGen(opt =>
     //opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     opt.OperationFilter<SecurityRequirementsOperationFilter>();
 });
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
+    builder.Services.AddCors(options =>
     {
-        builder.WithOrigins(
-                "http://localhost:5173",        // Thêm origin của client
-                "http://localhost:8080",
-                "http://localhost:3000",
-                "http://127.0.0.1:5500",        // Cho file HTML local
-                "http://192.168.0.106:5173"     // IP local nếu cần
-            )  // Trong môi trường phát triển, hoặc danh sách cụ thể trong sản xuất
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials(); // Quan trọng cho SignalR
+        options.AddPolicy("AllowAll", builder =>
+        {
+            builder.WithOrigins(
+                    "http://localhost:5173",        // Thêm origin của client
+                    "http://localhost:8080",
+                    "http://localhost:3000",
+                    "http://127.0.0.1:5500",        // Cho file HTML local
+                    "http://192.168.0.104:5173"     // IP local nếu cần
+                )  // Trong môi trường phát triển, hoặc danh sách cụ thể trong sản xuất
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials(); // Quan trọng cho SignalR
+        });
     });
-});
 
 builder.Services.AddAppScopedService();
 builder.Services.AddSignalR(); // trong phần cấu hình dịch vụ

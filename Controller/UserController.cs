@@ -9,6 +9,7 @@ using apicampusjob.Service;
 using Swashbuckle.AspNetCore.Annotations;
 using apicampusjob.Controllers;
 using static apicampusjob.Service.UserServicecs;
+using apicampusjob.Enums;
 
 namespace secondhand_market.Controller
 {
@@ -30,7 +31,25 @@ namespace secondhand_market.Controller
                return Ok(response);
            },_context);
         }
- 
-        
+        [HttpPost("update-status")]
+        [DbpCert]
+        [SwaggerResponse(statusCode: 200, type: typeof(BaseResponse), description: "Update Status Response")]
+        public async Task<IActionResult> UpdateStatus([FromBody] UuidRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = new BaseResponse();
+
+
+                _userService.UpdateStatus(request.Uuid);
+
+
+                response.error.SetErrorCode(ErrorCode.SUCCESS);
+                return Ok(response);
+
+            }, _context);
+        }
+
+
     }
 }

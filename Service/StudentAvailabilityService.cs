@@ -6,6 +6,7 @@ using apicampusjob.Models.Request;
 using apicampusjob.Models.Response;
 using apicampusjob.Repository;
 using AutoMapper;
+using Microsoft.AspNet.SignalR;
 
 namespace apicampusjob.Service
 {
@@ -13,7 +14,9 @@ namespace apicampusjob.Service
     {
         BaseResponse InsertStudentAvailability(UpsertStudentAvailability request);
         BaseResponse UpdateStudentAvailability(UpsertStudentAvailability request);
+        BaseResponseMessageItem<StudentAvailabilityDTO> GetListAvailability(GetAvailabilityByStudenUuid request);
     }
+
     public class StudentAvailabilityService : BaseService, IStudentAvailabilityService
     {
         public IStudentAvailabilityRepository _studentAvailabilityRepository;
@@ -24,19 +27,33 @@ namespace apicampusjob.Service
             _studentRepository = studentRepository;
         }
 
+        public BaseResponseMessageItem<StudentAvailabilityDTO> GetListAvailability(GetAvailabilityByStudenUuid request)
+        {
+            var respone = new BaseResponseMessageItem<StudentAvailabilityDTO>();
+            var lstAvailability = _studentAvailabilityRepository.GetAvailabilityByStudentUuid(request);
+
+            if (lstAvailability != null)
+            {
+                var lstAvailabilityDTO = _mapper.Map<List<StudentAvailabilityDTO>>(lstAvailability);
+
+                respone.Data = lstAvailabilityDTO;
+            }
+            return respone;
+        }
+
         public BaseResponse InsertStudentAvailability(UpsertStudentAvailability request)
         {
-            if (_studentRepository.GetStudentInforByStudentUuid(request.Student_Uuid) == null)
+            if (_studentRepository.GetStudentInforByStudentUuid(request.studentUuid) == null)
             {
                 throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
 
             }
             var newStudentAvailability = new StudentAvailability
             {
-                StudentUuid = request.Student_Uuid,
-                DayOfWeek = request.Day_of_week,
-                StartTime = request.Start_time,
-                EndTime = request.End_time,
+                StudentUuid = request.studentUuid,
+                DayOfWeek = request.dayOfWeek,
+                StartTime = request.startTime,
+                EndTime = request.endTime,
 
             };
             return ExecuteInTransaction(() =>
@@ -51,7 +68,7 @@ namespace apicampusjob.Service
         {
             var response = new BaseResponse();
             var oldAvailability = _studentAvailabilityRepository.GetAvailabilityByUuid(request.Uuid);
-            if (_studentRepository.GetStudentInforByStudentUuid(request.Student_Uuid) == null)
+            if (_studentRepository.GetStudentInforByStudentUuid(request.studentUuid) == null)
             {
                 throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
 
@@ -60,9 +77,9 @@ namespace apicampusjob.Service
             {
                 throw new ErrorException(ErrorCode.AVAILABLITY_NOT_FOUND);
             }
-            oldAvailability.DayOfWeek = request.Day_of_week;
-            oldAvailability.StartTime = request.Start_time;
-            oldAvailability.EndTime = request.End_time;
+            oldAvailability.DayOfWeek = request.dayOfWeek;
+            oldAvailability.StartTime = request.startTime;
+            oldAvailability.EndTime = request.endTime;
             _studentAvailabilityRepository.UpdateItem(oldAvailability);
             return response;
         }

@@ -33,6 +33,28 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
+        [HttpPost("search-by-skill")]
+        [DbpCert]
+        public async Task<IActionResult> SearchBySkill([FromBody] SearchJobBySkillRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _jobService.GetJobBySkill(request);
+                return Ok(response);
+            },_context);
+            
+        }
+        [HttpPost("search-by-schedule")]
+        [DbpCert]
+        public async Task<IActionResult> SearchBySchedule([FromBody] GetJobsByScheduleRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _jobService.GetJobBySchedule(request);
+                return Ok(response);
+            }, _context);
+
+        }
 
         /// <summary>
         /// Thêm mới công việc

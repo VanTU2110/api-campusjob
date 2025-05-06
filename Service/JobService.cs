@@ -9,12 +9,16 @@ using apicampusjob.Repository;
 using apicampusjob.Utils;
 using AutoMapper;
 using CloudinaryDotNet.Actions;
+using Microsoft.AspNet.SignalR.Hosting;
+using Microsoft.AspNet.SignalR;
 
 namespace apicampusjob.Service
 {
     public interface IJobService
     {
         BaseResponseMessagePage<JobDTO>GetPageListJob(GetPageListJobRequest request);
+        BaseResponseMessagePage<JobDTO> GetJobBySkill(SearchJobBySkillRequest request);
+        BaseResponseMessagePage<JobDTO> GetJobBySchedule(GetJobsByScheduleRequest request);
         BaseResponse InsertJob(UpsertJobRequest request);
         BaseResponse UpdateJob(UpsertJobRequest request, TokenInfo token);
         BaseResponseMessage<JobDTO> GetJobByUuid(string uuid);
@@ -27,6 +31,46 @@ namespace apicampusjob.Service
         {
             _jobRepository = jobRepository;
             _companiesRepository = companiesRepository;
+        }
+
+        public BaseResponseMessagePage<JobDTO> GetJobBySchedule(GetJobsByScheduleRequest request)
+        {
+            var response = new BaseResponseMessagePage<JobDTO>();
+            var lstJob = _jobRepository.GetJobBySchedule(request);
+            int count = lstJob.Count;
+            if (lstJob != null && count > 0)
+            {
+                var result = lstJob.OrderByDescending(x => x.Created).TakePage(request.Page, request.PageSize);
+                var lstJobsDTO = _mapper.Map<List<JobDTO>>(result);
+
+                response.Data.Items = lstJobsDTO;
+                response.Data.Pagination = new Paginations()
+                {
+                    TotalPage = result.TotalPages,
+                    TotalCount = result.TotalCount,
+                };
+            }
+            return response;
+        }
+
+        public BaseResponseMessagePage<JobDTO> GetJobBySkill(SearchJobBySkillRequest request)
+        {
+            var response = new BaseResponseMessagePage<JobDTO>();
+            var lstJob = _jobRepository.GetJobBySkill(request);
+            int count = lstJob.Count;
+            if (lstJob != null && count > 0)
+            {
+                var result = lstJob.OrderByDescending(x => x.Created).TakePage(request.Page, request.PageSize);
+                var lstJobsDTO = _mapper.Map<List<JobDTO>>(result);
+
+                response.Data.Items = lstJobsDTO;
+                response.Data.Pagination = new Paginations()
+                {
+                    TotalPage = result.TotalPages,
+                    TotalCount = result.TotalCount,
+                };
+            }
+            return response;
         }
 
         public BaseResponseMessage<JobDTO> GetJobByUuid(string uuid)

@@ -47,6 +47,16 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
+        [HttpPost("get-list-vailability")]
+        [DbpCert]
+        public IActionResult GetListAvailability([FromBody] GetAvailabilityByStudenUuid request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentAvailabilityService.GetListAvailability(request);
+                return Ok(response);
+            },_context);
+        }
 
         
     }

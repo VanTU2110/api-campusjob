@@ -14,7 +14,7 @@ namespace apicampusjob.Service
 {
         public interface IAuthService
         {
-            BaseResponse RegisterStudent(RegisterAccountRequest request);
+        BaseResponse RegisterStudent(RegisterAccountRequest request);
         BaseResponse RegisterCompany(RegisterAccountRequest request);
 
         BaseResponseMessage<LogInResp> Login(LogInRequest request);
@@ -47,11 +47,16 @@ namespace apicampusjob.Service
                 {
                     throw new ErrorException(ErrorCode.INVALID_PASS);
                 }
+                if (acc.Status == 0)
+                {
+                    throw new ErrorException(ErrorCode.ACCOUNT_LOCKED);
+                }
 
-                // Populate response
-                loginResp.Uuid = acc.Uuid;
+            // Populate response
+            loginResp.Uuid = acc.Uuid;
                 loginResp.Email = acc.Email;
                 loginResp.Role = acc.Role;
+            loginResp.IsVerify = acc.IsVerify;
 
                 return loginResp;
             }

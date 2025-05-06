@@ -18,7 +18,7 @@ namespace apicampusjob.Repository
         public List<StudentAvailability> GetAvailabilityByStudentUuid(GetAvailabilityByStudenUuid request)
         {
            return _dbContext.StudentAvailability
-                .Where(x =>x.StudentUuid == request.Student_Uuid)
+                .Where(x =>x.StudentUuid == request.studentUuid)
                 .ToList();
         }
 

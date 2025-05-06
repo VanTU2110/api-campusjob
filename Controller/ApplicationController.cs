@@ -7,6 +7,7 @@ using apicampusjob.Models.Response;
 using apicampusjob.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Services.Common;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace apicampusjob.Controller
@@ -98,6 +99,17 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
            
+        }
+        [HttpPost("add-note-to-application")]
+        [SwaggerResponse(statusCode: 200, type: typeof(BaseResponse), description: "AddNoteToApplication Response")]
+        public IActionResult AddNoteToApplication([FromBody] AddNoteToApplicationRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _applicationService.UpdateNote(request);
+                return Ok(response);
+            },_context) ;
+            
         }
     }
 }
