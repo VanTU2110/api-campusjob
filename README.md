@@ -32,3 +32,16 @@ Xây dựng một API để quản lý các chức năng của ứng dụng tìm
    ```bash
    git clone https://github.com/VanTU2110/api-campusjob.git
    cd api-campusjob
+3 **Cấu hình cơ sở dữ liệu**
+  - Tạo cơ sở dữ liệu MariaDB và cấu hình trong appsettings.json.
+  - Cấu hình chuỗi kết nối đến cơ sở dữ liệu trong file appsettings.json:
+    "ConnectionStrings": {
+  "DefaultConnection": "Server=localhost;Database=job_portal_db;User=root;Password=yourpassword;"
+}
+4. **Cài đặt các gói NuGet Package**
+   -dotnet restore
+5. **Chạy Migration để tạo bảng trong cơ sở dữ liệu:**
+    -dotnet ef database update
+6. **Chạy API**
+    -dotnet run
+
