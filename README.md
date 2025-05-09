@@ -30,5 +30,5 @@ Xây dựng một API để quản lý các chức năng của ứng dụng tìm
 
 2. **Clone repository về máy**:
    ```bash
-   git clone https://github.com/username/repo-name.git
-   cd repo-name
+   git clone https://github.com/VanTU2110/api-campusjob.git
+   cd api-campusjob
