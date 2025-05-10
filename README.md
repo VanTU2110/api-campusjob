@@ -41,7 +41,9 @@ Xây dựng một API để quản lý các chức năng của ứng dụng tìm
 4. **Cài đặt các gói NuGet Package**
    -dotnet restore
 5. **Chạy Migration để tạo bảng trong cơ sở dữ liệu:**
+    ```bash
     -dotnet ef database update
 6. **Chạy API**
+7. ```bash
     -dotnet run
 
