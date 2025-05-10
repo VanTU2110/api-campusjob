@@ -39,11 +39,12 @@ Xây dựng một API để quản lý các chức năng của ứng dụng tìm
   "DefaultConnection": "Server=localhost;Database=job_portal_db;User=root;Password=yourpassword;"
 }
 4. **Cài đặt các gói NuGet Package**
-   -dotnet restore
+    ```bash
+   dotnet restore
 5. **Chạy Migration để tạo bảng trong cơ sở dữ liệu:**
     ```bash
-    -dotnet ef database update
+    dotnet ef database update
 6. **Chạy API**
 7. ```bash
-    -dotnet run
+    dotnet run
 
