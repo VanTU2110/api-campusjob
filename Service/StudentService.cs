@@ -1,6 +1,7 @@
 ﻿using apicampusjob.Configuaration;
 using apicampusjob.Databases.TM;
 using apicampusjob.Enums;
+using apicampusjob.Extensions;
 using apicampusjob.Models.DataInfo;
 using apicampusjob.Models.Request;
 using apicampusjob.Models.Response;
@@ -18,6 +19,7 @@ namespace apicampusjob.Service
         BaseResponse UpdateStudent(UpsertStudentRequest student, TokenInfo token);
         BaseResponseMessage<StudentDTO> GetDetailStudent(string Useruuid);
         BaseResponseMessage<StudentDTO> GetDetailStudentByStudentUuid(string Studentuuid);
+        BaseResponseMessagePage<Student_Response> GetPageListStudent(GetPageListStudent request);
     }
     public class StudentService : BaseService, IStudentService
     {
@@ -51,6 +53,26 @@ namespace apicampusjob.Service
             }
             var detailstudentDTO = _mapper.Map<StudentDTO>(student);
             response.Data = detailstudentDTO;
+            return response;
+        }
+
+        public BaseResponseMessagePage<Student_Response> GetPageListStudent(GetPageListStudent request)
+        {
+            var response = new BaseResponseMessagePage<Student_Response>();
+            var lstJob = _studentRepository.GetPageListStudet(request);
+            int count = lstJob.Count;
+            if (lstJob != null && count > 0)
+            {
+                var result = lstJob.TakePage(request.Page, request.PageSize);
+                var lstJobsDTO = _mapper.Map<List<Student_Response>>(result);
+
+                response.Data.Items = lstJobsDTO;
+                response.Data.Pagination = new Paginations()
+                {
+                    TotalPage = result.TotalPages,
+                    TotalCount = result.TotalCount,
+                };
+            }
             return response;
         }
 

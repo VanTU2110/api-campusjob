@@ -51,5 +51,23 @@ namespace apicampusjob.Enums
             Cancelled,
             Hired
         }
+        public enum ReportStatus
+        {
+            Pending,
+            Resolved,
+            Rejected
+        }
+        public enum ReportReason
+        {
+            FakeInformation,
+            ScamFraud,
+            Inappropriate,
+            Spam,
+            Duplicate,
+            WrongCategory,
+            Offensive,
+            Other
+        }
+
     }
 }

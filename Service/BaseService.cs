@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using apicampusjob.Databases.TM;
+using apicampusjob.Models.Response;
 
 namespace apicampusjob.Service
 {
@@ -38,6 +39,27 @@ namespace apicampusjob.Service
                 }
             }
         }
-        
+        protected Task<BaseResponse> ExecuteInTransactionAsync(Func<Task<BaseResponse>> action)
+        {
+            return ExecuteInTransactionWrapperAsync(action);
+        }
+
+        private async Task<BaseResponse> ExecuteInTransactionWrapperAsync(Func<Task<BaseResponse>> action)
+        {
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            try
+            {
+                var result = await action();
+                await transaction.CommitAsync();
+                return result;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+
     }
 }

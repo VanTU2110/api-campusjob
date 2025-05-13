@@ -1,5 +1,7 @@
 ﻿using apicampusjob.Databases.TM;
+using apicampusjob.Models.Request;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 
 namespace apicampusjob.Repository
@@ -8,6 +10,7 @@ namespace apicampusjob.Repository
     {
         Companies GetCompaniesInforByUserUuid(string UserUuid);
         Companies GetCompaniesInforbyUuid (string uuid);
+        List<Companies> GetPageListCompanies(GetPageListCompany request);
     }
     public class CompaniesRepository : BaseRepository, ICompaniesRepository
     {
@@ -26,6 +29,15 @@ namespace apicampusjob.Repository
                 .Include(x => x.MatpNavigation)
                 .Include(x => x.Xa)
                 .Include(x => x.MaqhNavigation).FirstOrDefault(x => x.Uuid == uuid);
+        }
+
+        public List<Companies> GetPageListCompanies(GetPageListCompany request)
+        {
+            return _dbContext.Companies
+               .Include(x => x.MatpNavigation)
+               .Include(x => x.Xa)
+               .Include(x => x.MaqhNavigation)
+               .Where(x => string.IsNullOrEmpty(request.Keyword) || x.Name.Contains(request.Keyword)).ToList();
         }
     }
 }

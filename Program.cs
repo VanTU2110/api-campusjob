@@ -64,7 +64,10 @@ builder.Services.AddSwaggerGen(opt =>
                     "http://localhost:8080",
                     "http://localhost:3000",
                     "http://127.0.0.1:5500",        // Cho file HTML local
-                    "http://192.168.0.104:5173"     // IP local nếu cần
+                    "http://192.168.0.111:5173"  ,
+                    "http://localhost:8888",
+                    "http://192.168.0.108:5173"
+                // IP local nếu cần
                 )  // Trong môi trường phát triển, hoặc danh sách cụ thể trong sản xuất
                    .AllowAnyMethod()
                    .AllowAnyHeader()
@@ -93,6 +96,8 @@ builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
 builder.Services.AddScoped<IConversationService, ConversationService>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IUserWarningRepository, UserWarningRepository>();
 
 builder.Services.AddScoped<IApplicationRepository, ApplicationRepository>();
 builder.Services.AddScoped<IJobSkillRepository, JobSkillRepository>();
@@ -108,6 +113,8 @@ builder.Services.AddScoped<IJobScheduleRepository, JobScheduleRepository>();
 builder.Services.AddScoped<ICVRepository, CVRepository>();
 builder.Services.AddScoped<IStudentAvailabilityRepository, StudentAvailabilityRepository>();
 builder.Services.AddScoped<IStudentSkillRepository, StudentSkillRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IUserWarningService, UserWarningService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

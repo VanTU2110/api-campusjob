@@ -1,6 +1,6 @@
 ﻿namespace apicampusjob.Models.DataInfo
 {
-    public class JobDTO:BaseDTO
+    public class JobDTO : BaseDTO
     {
         public InfoCatalogDTO Company {  get; set; }
         public string Title { get; set; } = null!;

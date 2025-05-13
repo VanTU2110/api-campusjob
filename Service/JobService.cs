@@ -79,7 +79,7 @@ namespace apicampusjob.Service
             var job = _jobRepository.GetJobByUuid(uuid);
             if (job == null) 
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
             }
             var detailJobDTO = _mapper.Map<JobDTO>(job);
             response.Data = detailJobDTO;
@@ -142,7 +142,7 @@ namespace apicampusjob.Service
             var oldJob = _jobRepository.GetJobByUuid(request.Uuid);
             if (oldJob == null)
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
             }
             if(_companiesRepository.GetCompaniesInforbyUuid(request.CompanyUuid) == null)
             {

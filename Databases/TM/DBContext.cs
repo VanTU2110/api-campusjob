@@ -31,6 +31,8 @@ public partial class DBContext : DbContext
 
     public virtual DbSet<Messages> Messages { get; set; }
 
+    public virtual DbSet<Report> Report { get; set; }
+
     public virtual DbSet<Sessions> Sessions { get; set; }
 
     public virtual DbSet<Skills> Skills { get; set; }
@@ -44,6 +46,8 @@ public partial class DBContext : DbContext
     public virtual DbSet<StudentSkill> StudentSkill { get; set; }
 
     public virtual DbSet<User> User { get; set; }
+
+    public virtual DbSet<UserWarning> UserWarning { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -488,6 +492,48 @@ public partial class DBContext : DbContext
                 .HasConstraintName("FK_message_ref_convrsations");
         });
 
+        modelBuilder.Entity<Report>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("report");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("'0000-00-00 00:00:00'")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Reason)
+                .HasDefaultValueSql("'other'")
+                .HasColumnType("enum('fake_information','scam_fraud','inappropriate','spam','duplicate','wrong_category','offensive','other')")
+                .HasColumnName("reason");
+            entity.Property(e => e.ReporterUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("reporter_uuid");
+            entity.Property(e => e.Status)
+                .HasDefaultValueSql("'pending'")
+                .HasColumnType("enum('pending','resolved','rejected')")
+                .HasColumnName("status");
+            entity.Property(e => e.TargetType)
+                .HasColumnType("enum('student','company','job')")
+                .HasColumnName("target_type");
+            entity.Property(e => e.TargetUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("target_uuid");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+        });
+
         modelBuilder.Entity<Sessions>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -782,6 +828,36 @@ public partial class DBContext : DbContext
                 .HasComment("0-Khóa, 1-Đang hoạt động")
                 .HasColumnType("tinyint(4)")
                 .HasColumnName("status");
+            entity.Property(e => e.Uuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("uuid");
+        });
+
+        modelBuilder.Entity<UserWarning>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("user_warning");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("'0000-00-00 00:00:00'")
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Messages)
+                .HasColumnType("text")
+                .HasColumnName("messages");
+            entity.Property(e => e.TargetType)
+                .HasColumnType("enum('student','company')")
+                .HasColumnName("target_type");
+            entity.Property(e => e.TargetUuid)
+                .HasMaxLength(36)
+                .HasDefaultValueSql("uuid()")
+                .HasColumnName("target_uuid");
             entity.Property(e => e.Uuid)
                 .HasMaxLength(36)
                 .HasDefaultValueSql("uuid()")

@@ -35,7 +35,7 @@ namespace apicampusjob.Service
             var response = new BaseResponseMessageItem<ScheduleInfoCatalogDTO>();
             if(_jobRepository.GetJobByUuid(request.JobUuid) == null)
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
             }
             var lstSchedule = _jobScheduleRepository.GetJobScheduleByJobUuid(request);
             if(lstSchedule == null)
@@ -70,7 +70,7 @@ namespace apicampusjob.Service
         {
            if(_jobRepository.GetJobByUuid(request.Job_Uuid) == null)
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
 
             }
             var newSchedule = new JobSchedule
@@ -96,7 +96,7 @@ namespace apicampusjob.Service
             var oldSchedule = _jobScheduleRepository.GetJobScheduleByJobUuid(request.Uuid);
             if (_jobRepository.GetJobByUuid(request.Job_Uuid) == null)
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
             }
             if (oldSchedule == null)
             {

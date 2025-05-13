@@ -544,3 +544,5 @@ D:\campusjob-project\CampusJob\apicampusjob\bin\Debug\net8.0\Microsoft.Owin.dll
 D:\campusjob-project\CampusJob\apicampusjob\bin\Debug\net8.0\Microsoft.Owin.Host.SystemWeb.dll
 D:\campusjob-project\CampusJob\apicampusjob\bin\Debug\net8.0\Microsoft.Owin.Security.dll
 D:\campusjob-project\CampusJob\apicampusjob\bin\Debug\net8.0\Owin.dll
+D:\campusjob-project\CampusJob\apicampusjob\bin\Debug\net8.0\NaCl.dll
+D:\campusjob-project\CampusJob\apicampusjob\bin\Debug\net8.0\PusherServer.dll

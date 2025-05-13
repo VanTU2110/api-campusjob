@@ -1,6 +1,7 @@
 ﻿using apicampusjob.Configuaration;
 using apicampusjob.Databases.TM;
 using apicampusjob.Enums;
+using apicampusjob.Extensions;
 using apicampusjob.Models.DataInfo;
 using apicampusjob.Models.Request;
 using apicampusjob.Models.Response;
@@ -16,6 +17,7 @@ namespace apicampusjob.Service
         BaseResponse UpdateCompanies(UpsertCompaniesRequest company, TokenInfo token);
         BaseResponseMessage<CompaniesDTO> GetDetailCompanies(string Useruuid);
         BaseResponseMessage<CompaniesDTO> GetDetailCompaniesbyCompanyUuid(string companyUuid);
+        BaseResponseMessagePage<CompaniesDTO> GetPageListCompanies(GetPageListCompany request);
 
     }
     public class CompaniesService : BaseService, ICompaniesService
@@ -51,6 +53,26 @@ namespace apicampusjob.Service
             }
             var detailcompanyDTO = _mapper.Map<CompaniesDTO>(company);
             response.Data = detailcompanyDTO;
+            return response;
+        }
+
+        public BaseResponseMessagePage<CompaniesDTO> GetPageListCompanies(GetPageListCompany request)
+        {
+            var response = new BaseResponseMessagePage<CompaniesDTO>();
+            var lstJob = _companiesRepository.GetPageListCompanies(request);
+            int count = lstJob.Count;
+            if (lstJob != null && count > 0)
+            {
+                var result = lstJob.TakePage(request.Page, request.PageSize);
+                var lstJobsDTO = _mapper.Map<List<CompaniesDTO>>(result);
+
+                response.Data.Items = lstJobsDTO;
+                response.Data.Pagination = new Paginations()
+                {
+                    TotalPage = result.TotalPages,
+                    TotalCount = result.TotalCount,
+                };
+            }
             return response;
         }
 

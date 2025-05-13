@@ -50,7 +50,7 @@ namespace apicampusjob.Enums
         [Description("Không tìm thấy công ty này")]
         COMPANY_NOT_FOUND,
         [Description("Khong tim thay cong viec")]
-        JOB_NOT_FOUND,
+        REPORT_NOT_FOUND,
         [Description("Khong tim thay danh sach lich lam viec cua cong viec nay")]
         SCHEDULE_NOT_FOUND,
         [Description("Khong tim thay CV")]
@@ -68,6 +68,6 @@ namespace apicampusjob.Enums
         [Description("Khong the cap nhat trang thai")]
         CANNOT_CANCEL_APPLICATION,
         CONVERSATION_NOT_FOUND,
-        
+        NO_CHANGE,
     }
 }

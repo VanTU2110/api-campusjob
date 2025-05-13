@@ -29,7 +29,7 @@ namespace apicampusjob.Service
         {
             if(_jobrepositpry.GetJobByUuid(request.JobUuid) == null)
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
             }
             if (_skillRepository.GetSkillDetailByUuid(request.SkillUuid) == null)
             {

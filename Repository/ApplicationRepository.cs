@@ -11,11 +11,17 @@ namespace apicampusjob.Repository
         Applications GetApplicationsByUuid(string uuid);
         int CountApplyByJobUuid(GetPageListApplyByJobUuid request);
         int CountApplyByStudentUuid(GetPageListApplyByStudentUuid request);
+        Applications? CheckStudentApply(string studentUuid, string jobUuid);
     }
     public class ApplicationRepository : BaseRepository, IApplicationRepository
     {
         public ApplicationRepository(DBContext dbContext) : base(dbContext)
         {
+        }
+
+        public Applications? CheckStudentApply(string studentUuid, string jobUuid)
+        {
+            return _dbContext.Applications.FirstOrDefault(x => x.StudentUuid == studentUuid && x.JobUuid == jobUuid);
         }
 
         public int CountApplyByJobUuid(GetPageListApplyByJobUuid request)

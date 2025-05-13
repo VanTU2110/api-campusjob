@@ -111,5 +111,14 @@ namespace apicampusjob.Controller
             },_context) ;
             
         }
+        [HttpPost("check-applied")]
+        public IActionResult CheckStudentApplied([FromBody] CheckAppliedRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _applicationService.CheckStudentApplied(request.studentUuid,request.jobUuid); 
+                return Ok(response);
+            }, _context);
+        }
     }
 }

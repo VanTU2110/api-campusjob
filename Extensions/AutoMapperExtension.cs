@@ -41,6 +41,13 @@ namespace apicampusjob.Extensions
                     .ForMember(destination => destination.Availabilities, options => options.MapFrom(source => source.StudentAvailability))
                     .ForMember(destination =>destination.ListSkill, options => options.MapFrom(source=> source.StudentSkill));
 
+            CreateMap<Student, Student_Response>().ForMember(destination => destination.TP,
+               options => options.MapFrom(source => source.MatpNavigation))
+                   .ForMember(destination => destination.QH,
+               options => options.MapFrom(source => source.MaqhNavigation))
+                   .ForMember(destination => destination.Xa,
+               options => options.MapFrom(source => source.Xa));
+
             CreateMap<UpsertStudentRequest, StudentDTO>();
             CreateMap<UpsertCompaniesRequest, CompaniesDTO>();
             CreateMap<Companies, CompaniesDTO>().ForMember(destination => destination.TP,
@@ -122,7 +129,10 @@ namespace apicampusjob.Extensions
             CreateMap<Conversations, ConversationDTO>();
             CreateMap<SendMessageRequest, MessageDTO>();
             CreateMap<Messages,MessageDTO>();
-
+            CreateMap<CreateReportRequest, ReportDTO>();
+            CreateMap<Report, ReportDTO>();
+            CreateMap<CreateWarning,UserWarningDTO>();
+            CreateMap<UserWarning, UserWarningDTO>();
         }
 
     }

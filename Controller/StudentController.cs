@@ -19,7 +19,16 @@ namespace apicampusjob.Controller
     {
         private readonly IStudentService _studentService= studentService;
         private readonly DBContext _context;
-     
+        [HttpPost("get-page-list-student")]
+        [DbpCert]
+        public IActionResult GetPageListStudent([FromBody] GetPageListStudent request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentService.GetPageListStudent(request);
+                return Ok(response);
+            }, _context);
+        }
         [HttpPost("create-student")]
         [DbpCert]
         public IActionResult AddStudent([FromBody] UpsertStudentRequest student)

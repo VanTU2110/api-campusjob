@@ -7,6 +7,7 @@ using apicampusjob.Models.Request;
 using apicampusjob.Models.Response;
 using apicampusjob.Repository;
 using AutoMapper;
+using Microsoft.AspNet.SignalR;
 using static apicampusjob.Enums.EnumDatabase;
 
 namespace apicampusjob.Service
@@ -19,6 +20,8 @@ namespace apicampusjob.Service
         BaseResponse UpdateNote(AddNoteToApplicationRequest request);
         BaseResponseMessagePage<ApplicationDTO> GetPageListApplyByJobUuid(GetPageListApplyByJobUuid request);
         BaseResponseMessagePage<ApplicationDTO> GetPageListApplyByStudentUuid(GetPageListApplyByStudentUuid request);
+        BaseResponse CheckStudentApplied(string studentUuid, string jobUuid);
+
     }
     public class ApplicationService : BaseService, IApplicationService
     {
@@ -41,7 +44,7 @@ namespace apicampusjob.Service
             }
             if (_jobRepository.GetJobByUuid(request.JobUuid)== null)
             {
-                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
             }
             var newApply = new Applications
             {
@@ -66,7 +69,7 @@ namespace apicampusjob.Service
             {
                 throw new ErrorException(ErrorCode.APPLICATION_NOT_FOUND);
             }
-
+            var studentUuid = application.StudentUuid;
             var currentStatus = Enum.Parse<ApplicationStatus>(application.Status,ignoreCase:true);
 
             // Chỉ cho phép hủy nếu đang ở trạng thái cho phép
@@ -88,6 +91,7 @@ namespace apicampusjob.Service
                 return new BaseResponseMessage<ApplicationDTO>
                 {
                     Data = _mapper.Map<ApplicationDTO>(updated)
+                
                 };
             });
         }
@@ -192,5 +196,24 @@ namespace apicampusjob.Service
                 };
             });
         }
+        public BaseResponse CheckStudentApplied(string studentUuid, string jobUuid)
+        {
+            if (_studentRepository.GetStudentInforByStudentUuid(studentUuid) == null)
+            {
+                throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
+
+            }
+            if (_jobRepository.GetJobByUuid(jobUuid) == null)
+            {
+                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
+            }
+            var application = _applicationRepository.CheckStudentApply(studentUuid, jobUuid);
+
+            return new BaseResponseMessage<bool>
+            {
+                Data = application != null
+            };
+        }
+
     }
 }

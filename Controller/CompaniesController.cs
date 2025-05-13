@@ -18,6 +18,16 @@ namespace apicampusjob.Controller
     {
         private readonly ICompaniesService _companyService = companyService;
         private readonly DBContext _context;
+        [HttpPost("get-page-list-company")]
+        [DbpCert]
+        public IActionResult GetPageListStudent([FromBody] GetPageListCompany request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _companyService.GetPageListCompanies(request);
+                return Ok(response);
+            }, _context);
+        }
 
         /// <summary>
         /// Tạo mới Company
