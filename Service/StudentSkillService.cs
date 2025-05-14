@@ -12,6 +12,7 @@ namespace apicampusjob.Service
     public interface IStudentSkillService
     {
         BaseResponse InsertStudentSkill(UpsertStudentSkillRequest request);
+        BaseResponse DeleteStudentSkill(string uuid);
     }
     public class StudentSkillService : BaseService, IStudentSkillService
     {
@@ -23,6 +24,20 @@ namespace apicampusjob.Service
             _studentRepository = studentRepository;
             _studentSkillRepository = studentSkillRepository;
             _skillRepository = skillRepository;
+        }
+
+        public BaseResponse DeleteStudentSkill(string uuid)
+        {
+            var response = new BaseResponse();
+            var studentskill = _studentSkillRepository.GetDetailStudentSkill(uuid);
+            if (studentskill == null ) {
+            throw new ErrorException(ErrorCode.STUDENTSKILL_NOT_FOUND);
+            }
+            return ExecuteInTransaction(() =>
+            {
+                _studentSkillRepository.DeleteItem(studentskill);
+                return response;
+            });
         }
 
         public BaseResponse InsertStudentSkill(UpsertStudentSkillRequest request)

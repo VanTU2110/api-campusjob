@@ -69,7 +69,16 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
+        [HttpPost("delete-schedule")]
+        public IActionResult DeleteSchedule(UuidRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var result = _jobScheduleService.DeleteSchedule(request.Uuid);
+                return Ok(result);
+            }, _context);
+            
+        }
 
-        
     }
 }

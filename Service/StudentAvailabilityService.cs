@@ -15,6 +15,7 @@ namespace apicampusjob.Service
         BaseResponse InsertStudentAvailability(UpsertStudentAvailability request);
         BaseResponse UpdateStudentAvailability(UpsertStudentAvailability request);
         BaseResponseMessageItem<StudentAvailabilityDTO> GetListAvailability(GetAvailabilityByStudenUuid request);
+        BaseResponse DeleteStudentAvailability(string uuid);
     }
 
     public class StudentAvailabilityService : BaseService, IStudentAvailabilityService
@@ -25,6 +26,21 @@ namespace apicampusjob.Service
         {
             _studentAvailabilityRepository = studentAvailabilityRepository;
             _studentRepository = studentRepository;
+        }
+
+        public BaseResponse DeleteStudentAvailability(string uuid)
+        {
+            var response = new BaseResponse();
+            var avaibility = _studentAvailabilityRepository.GetAvailabilityByUuid(uuid);
+            if (avaibility == null)
+            {
+                throw new ErrorException(ErrorCode.AVAILABLITY_NOT_FOUND);
+            }
+            return ExecuteInTransaction(() =>
+            {
+                _studentAvailabilityRepository.DeleteItem(avaibility);
+                return response;
+            });
         }
 
         public BaseResponseMessageItem<StudentAvailabilityDTO> GetListAvailability(GetAvailabilityByStudenUuid request)

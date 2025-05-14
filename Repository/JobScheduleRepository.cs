@@ -9,7 +9,7 @@ namespace apicampusjob.Repository
         List<JobSchedule> GetPageListJobSchedule(GetPageListSchedule request);
         int Count(GetPageListSchedule request);
         List <JobSchedule> GetJobScheduleByJobUuid(GetListJobScheduleByJobUuid request);
-        JobSchedule GetJobScheduleByJobUuid(string uuid);
+        JobSchedule GetJobScheduleByUuid(string uuid);
     }
     public class JobScheduleRepository : BaseRepository, IJobScheduleRepository
     {
@@ -30,7 +30,7 @@ namespace apicampusjob.Repository
            .ToList();
         }
 
-        public JobSchedule GetJobScheduleByJobUuid(string uuid)
+        public JobSchedule GetJobScheduleByUuid(string uuid)
         {
             return _dbContext.JobSchedule.FirstOrDefault(x => x.Uuid == uuid);
         }

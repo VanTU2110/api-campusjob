@@ -59,6 +59,10 @@ namespace apicampusjob.Enums
         AVAILABLITY_NOT_FOUND,
         [Description("Khong tim thay ki nang")]
         SKILL_NOT_FOUND,
+        [Description("Khong tim thay i nang cong viec")]
+        JOBSKILL_NOT_FOUND,
+        [Description("Khong tim thay ki nang sinh vien")]
+        STUDENTSKILL_NOT_FOUND,
         [Description("Ứng tuyển không tồn tại")]
         APPLICATION_NOT_FOUND,
         [Description("Trạng thái không hợp lệ.")]

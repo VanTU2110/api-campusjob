@@ -17,6 +17,7 @@ namespace apicampusjob.Service
         BaseResponse InsertSchedule(UpsertScheduleRequest request);
         BaseResponse UpdateSchedule(UpsertScheduleRequest request, TokenInfo token);
         BaseResponseMessageItem<ScheduleInfoCatalogDTO> GetDetailSchedule(GetListJobScheduleByJobUuid request);
+        BaseResponse DeleteSchedule(string uuid);
     }
     public class JobScheduleService : BaseService, IJobScheduleService
 
@@ -28,6 +29,22 @@ namespace apicampusjob.Service
         {
             _jobScheduleRepository = jobScheduleRepository;
             _jobRepository = jobRepository;
+        }
+
+        public BaseResponse DeleteSchedule(string uuid)
+        {
+            var response = new BaseResponse();
+            var schedule = _jobScheduleRepository.GetJobScheduleByUuid(uuid);
+            if (schedule == null)
+            {
+                throw new ErrorException(ErrorCode.SCHEDULE_NOT_FOUND);
+            }
+            // Xoá trong transaction để đảm bảo an toàn
+            return ExecuteInTransaction(() =>
+            {
+                _jobScheduleRepository.DeleteItem(schedule);
+                return response;
+            });
         }
 
         public BaseResponseMessageItem<ScheduleInfoCatalogDTO> GetDetailSchedule(GetListJobScheduleByJobUuid request)
@@ -93,7 +110,7 @@ namespace apicampusjob.Service
         public BaseResponse UpdateSchedule(UpsertScheduleRequest request, TokenInfo token)
         {
             var response = new BaseResponse();
-            var oldSchedule = _jobScheduleRepository.GetJobScheduleByJobUuid(request.Uuid);
+            var oldSchedule = _jobScheduleRepository.GetJobScheduleByUuid(request.Uuid);
             if (_jobRepository.GetJobByUuid(request.Job_Uuid) == null)
             {
                 throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);

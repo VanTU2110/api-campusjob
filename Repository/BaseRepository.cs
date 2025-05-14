@@ -12,7 +12,7 @@ namespace apicampusjob.Repository
         T UpdateItem<T>(T item);
 
         T CreateItem<T>(T entity) where T : class;
-
+        void DeleteItem<T>(T entity) where T : class; // Thêm dòng này
 
 
     }
@@ -45,7 +45,11 @@ namespace apicampusjob.Repository
             _dbContext.SaveChanges();
             return entity;
         }
-        
+        public void DeleteItem<T>(T entity) where T : class
+        {
+            _dbContext.Set<T>().Remove(entity);
+            _dbContext.SaveChanges();
+        }
 
     }
 }

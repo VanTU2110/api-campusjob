@@ -57,7 +57,18 @@ namespace apicampusjob.Controller
                 return Ok(response);
             },_context);
         }
+        [HttpPost("delete-availability")]
+        [DbpCert]
+        public IActionResult DeleteAvailability([FromBody] UuidRequest request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentAvailabilityService.DeleteStudentAvailability(request.Uuid);
+                return Ok(response);
+            },_context);
+        }
 
-        
+
+
     }
 }

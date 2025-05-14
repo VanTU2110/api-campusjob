@@ -12,6 +12,7 @@ namespace apicampusjob.Service
     public interface IJobSkillService
     {
         BaseResponse InsertJobSkill(UpsertJobSkill request);
+        BaseResponse DeleteJobSKill(string uuid);
     }
     public class JobSkillService : BaseService, IJobSkillService
     {
@@ -23,6 +24,22 @@ namespace apicampusjob.Service
             _jobSkillRepository = jobSkillRepository;
             _skillRepository = skillRepository;
             _jobrepositpry = jobRepository;
+        }
+
+        public BaseResponse DeleteJobSKill(string uuid)
+        {
+            var response = new BaseResponse();
+            var jobskill = _jobSkillRepository.GetDetailJobSkill(uuid);
+            if (jobskill == null) 
+            {
+                throw new ErrorException(ErrorCode.JOBSKILL_NOT_FOUND);
+
+            }
+            return ExecuteInTransaction(() =>
+            {
+                _jobSkillRepository.DeleteItem(jobskill);
+                return response;
+            });
         }
 
         public BaseResponse InsertJobSkill(UpsertJobSkill request)
