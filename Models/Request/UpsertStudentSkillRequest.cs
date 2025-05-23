@@ -2,8 +2,8 @@
 {
     public class UpsertStudentSkillRequest:UuidRequest
     {
-        public string Student_Uuid { get; set; }
-        public string Skill_Uuid { get; set; }
+        public string studentUuid { get; set; }
+        public string skillUuid { get; set; }
         public string Proficiency { get; set; }
     }
 }

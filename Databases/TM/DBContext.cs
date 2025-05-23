@@ -844,8 +844,7 @@ public partial class DBContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
             entity.Property(e => e.CreatedAt)
-                .ValueGeneratedOnAddOrUpdate()
-                .HasDefaultValueSql("'0000-00-00 00:00:00'")
+                .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
             entity.Property(e => e.Messages)

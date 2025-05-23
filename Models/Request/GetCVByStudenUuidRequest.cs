@@ -4,6 +4,6 @@ namespace apicampusjob.Models.Request
 {
     public class GetCVByStudenUuidRequest: DpsParamBase
     {
-        public string Student_Uuid { get; set; }
+        public string studentUuid { get; set; }
     }
 }

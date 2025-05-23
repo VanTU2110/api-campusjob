@@ -27,6 +27,16 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
+        [HttpPost("get-list-student-skill")]
+        [DbpCert]
+        public IActionResult GetListStudentSkill([FromBody] GetListStudentSkillByStudentUuid request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentSkillService.GetListStudentSkill(request);
+                return Ok(response);
+            },_context);
+        }
         [HttpPost("delete-studentskill")]
         [DbpCert]
         public IActionResult DeleteStudentSkill([FromBody] UuidRequest request)

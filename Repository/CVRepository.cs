@@ -16,7 +16,7 @@ namespace apicampusjob.Repository
 
         public List<StudentCv> GetCVByStudentUuid(GetCVByStudenUuidRequest request)
         {
-            return _dbContext.StudentCv.Where(x =>x.StudentUuid == request.Student_Uuid).ToList();
+            return _dbContext.StudentCv.Where(x =>x.StudentUuid == request.studentUuid).ToList();
         }
 
         public StudentCv GetDetailCV(string uuid)

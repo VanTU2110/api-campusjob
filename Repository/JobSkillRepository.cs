@@ -7,6 +7,7 @@ namespace apicampusjob.Repository
     {
         List<JobSkill> GetListJobSkillByJobUuid(string jobUuid);
         JobSkill GetDetailJobSkill(string uuid);
+        JobSkill IsJobSkillExists(string jobUuid, string skillUuid);
     }
 
     public class JobSkillRepository : BaseRepository, IJobSkillRepository
@@ -26,6 +27,11 @@ namespace apicampusjob.Repository
         {
             return _dbContext.JobSkill
                 .FirstOrDefault(x => x.Uuid == uuid);
+        }
+
+        public JobSkill IsJobSkillExists(string jobUuid, string skillUuid)
+        {
+            return _dbContext.JobSkill.FirstOrDefault(js => js.JobUuid == jobUuid && js.SkillUuid == skillUuid);
         }
     }
 }

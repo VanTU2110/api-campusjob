@@ -34,6 +34,7 @@ namespace apicampusjob.Service
                 TargetUuid = request.TargetUuid ,
                 Reason = request.Reason,
                 Description = request.Description,
+                CreatedAt = DateTime.Now,
             };
             return ExecuteInTransaction(() =>
             {

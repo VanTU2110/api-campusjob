@@ -62,24 +62,22 @@ namespace apicampusjob.Service
 
         public async Task VerifyOtpAsync(string email, string otp)
         {
-            var user = _userService.GetDetailUserByEmail(email);
-            if (user == null)
-                throw new Exception("Người dùng không tồn tại.");
+            var user = _userService.GetDetailUserByEmail(email)
+                       ?? throw new ErrorException(ErrorCode.USER_NOT_FOUND);
 
             if (!OtpStorage.TryGetValue(email, out var otpData))
-                throw new Exception("Không tìm thấy mã OTP. Vui lòng gửi lại OTP.");
+                throw new ErrorException(ErrorCode.OTP_NOT_FOUND);
 
             if (DateTime.Now > otpData.Expiry)
-                throw new Exception("Mã OTP đã hết hạn. Vui lòng gửi lại OTP.");
+                throw new ErrorException(ErrorCode.OTP_EXPIRED);
 
             if (otp != otpData.Otp)
-                throw new Exception("Mã OTP không chính xác.");
+                throw new ErrorException(ErrorCode.OTP_INVALID);
 
-        
-            // Xóa OTP sau khi xác thực thành công
             OtpStorage.Remove(email);
 
             await Task.CompletedTask;
         }
+
     }
 }

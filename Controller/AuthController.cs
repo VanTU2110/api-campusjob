@@ -10,6 +10,8 @@ using apicampusjob.Models.Response;
 using apicampusjob.Service;
 using Swashbuckle.AspNetCore.Annotations;
 using apicampusjob.Controllers;
+using apicampusjob.Models.BaseRequest;
+using apicampusjob.Enums;
 
 namespace apicampusjob.Controller
 {
@@ -83,10 +85,33 @@ namespace apicampusjob.Controller
         }
         // Xác thực người dùng (verify)
         [HttpPost("verify-user")]
+        [DbpCert]
         public IActionResult VerifyUser([FromBody] VerifyUserRequest request)
         {
-            var response = _authservice.VerifyUser(request);
-            return Ok(response);
+            return ProcessRequest((token) =>
+            {
+                var response = _authservice.VerifyUser(request);
+                return Ok(response);
+            }, _context);
+           
         }
+        [HttpPost("logout")]
+        [DbpCert]
+        [SwaggerResponse(statusCode: 200, type: typeof(BaseResponse), description: "LogOut Response")]
+        public async Task<IActionResult> LogOut(DpsParamBase request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = new BaseResponse();
+
+
+                _authservice.LogOut(getTokenInfo(_context).Token);
+                
+                response.error.SetErrorCode(ErrorCode.SUCCESS);
+                return Ok(response);
+
+            }, _context);
+        }
+
     }
 }

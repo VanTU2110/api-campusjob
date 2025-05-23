@@ -102,6 +102,8 @@ namespace apicampusjob.Extensions
             CreateMap<UpsertStudentAvailability, StudentAvailabilityDTO>();
             CreateMap<StudentAvailability, StudentAvailabilityDTO>()
                 .ForMember(destination => destination.Uuid,
+                options => options.MapFrom(source => source.Uuid))
+                .ForMember(destination => destination.StudentUuid,
                 options => options.MapFrom(source => source.StudentUuid))
                 .ForMember(destination => destination.DayOfWeek,
                 options => options.MapFrom(source => source.DayOfWeek))
@@ -113,11 +115,11 @@ namespace apicampusjob.Extensions
             CreateMap<UpsertSkillRequest, SkillDTO>();
             CreateMap<UpsertStudentSkillRequest,StudentSkillDTO>()
                 .ForMember(destination =>destination.Skill,
-                options =>options.MapFrom(source => source.Skill_Uuid));
+                options =>options.MapFrom(source => source.skillUuid));
             
             CreateMap<StudentSkill, StudentSkillDTO>()
             .ForMember(dest => dest.Skill, opt => opt.MapFrom(src => src.SkillUu)) // đảm bảo SkillUu là object Skills
-            .ForMember(dest => dest.Student_Uuid, opt => opt.MapFrom(src => src.StudentUuid));
+            .ForMember(dest => dest.StudentUuid, opt => opt.MapFrom(src => src.StudentUuid));
 
             CreateMap<JobSkill, JobSkillDTO>().ForMember(dest => dest.Skill, opt => opt.MapFrom(src => src.SkillUu));
             CreateMap<Applications, ApplicationDTO>().ForMember(destination => destination.CoverLetter,
@@ -125,8 +127,25 @@ namespace apicampusjob.Extensions
             CreateMap<ApplyJobRequest, ApplicationDTO>().ForMember(destination => destination.CoverLetter,
                 options => options.MapFrom(source => source.CoverLetter));
 
-            CreateMap<CreateConversationRequest, ConversationDTO>();
-            CreateMap<Conversations, ConversationDTO>();
+            CreateMap<CreateConversationRequest, ConversationDTO>()
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CompanyUuid))
+                .ForMember(dest => dest.Student, opt => opt.MapFrom(src => src.StudentUuid));
+            CreateMap<Conversations, ConversationDTO>()
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.CompanyUu))
+                .ForMember(dest => dest.Student, opt => opt.MapFrom(src => src.StudentUu));
+
+            CreateMap<Student, InfoCatalogDTO>()
+               .ForMember(destination => destination.Name,
+               options => options.MapFrom(source => source.Fullname))
+                .ForMember(destination => destination.Uuid,
+               options => options.MapFrom(source => source.Uuid));
+
+            CreateMap<Companies, InfoCatalogDTO>()
+               .ForMember(destination => destination.Name,
+               options => options.MapFrom(source => source.Name))
+                .ForMember(destination => destination.Uuid,
+               options => options.MapFrom(source => source.Uuid));
+
             CreateMap<SendMessageRequest, MessageDTO>();
             CreateMap<Messages,MessageDTO>();
             CreateMap<CreateReportRequest, ReportDTO>();

@@ -16,6 +16,7 @@ namespace apicampusjob.Service
         {
         BaseResponse RegisterStudent(RegisterAccountRequest request);
         BaseResponse RegisterCompany(RegisterAccountRequest request);
+        BaseResponse LogOut(string token);
 
         BaseResponseMessage<LogInResp> Login(LogInRequest request);
         BaseResponse VerifyUser(VerifyUserRequest request);
@@ -185,12 +186,49 @@ namespace apicampusjob.Service
 
             // Kiểm tra và xác thực OTP
             _otpService.VerifyOtpAsync(request.Email, request.Otp).Wait();
-
-            // Cập nhật trạng thái người dùng thành đã xác thực
             user.IsVerify = true;
-            _userRepository.UpdateItem(user);
+            // Cập nhật trạng thái người dùng thành đã xác thực
+            return ExecuteInTransaction(() =>
+            {
+                return new BaseResponseMessage<UserDTO>
+                {
+                    Data = _mapper.Map<UserDTO>(_userRepository.UpdateItem(user)),
+                };
+            });
+        }
+        public BaseResponse LogOut(string token)
+        {
+            var response = new BaseResponse();
+            var tokenInfo = TokenManager.getTokenInfoByToken(token);
+            if (tokenInfo != null)
+            {
 
-            return response;
+                TokenManager.removeToken(token);
+
+
+                var oldSessions = _sessionRepository.GetListSessionByAccountUuid(tokenInfo.UserUuid);
+
+                if (oldSessions != null && oldSessions.Count > 0)
+                {
+                    foreach (var session in oldSessions)
+                    {
+                        session.Status = 1;
+                        session.TimeLogout = DateTime.Now;
+                    }
+
+
+                    _sessionRepository.UpdateItem(oldSessions);
+                    return response;
+                }
+                else
+                {
+                    throw new ErrorException(ErrorCode.TOKEN_INVALID);
+                }
+            }
+            else
+            {
+                throw new ErrorException(ErrorCode.TOKEN_INVALID);
+            }
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class ConversationDTO:BaseDTO
     {
-        public string StudentUuid { get; set; } = null!;
-        public string CompanyUuid { get; set; } = null!;
+        public InfoCatalogDTO Student { get; set; } = null!;
+        public InfoCatalogDTO Company { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
     }
 }

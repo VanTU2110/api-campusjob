@@ -113,6 +113,10 @@ namespace apicampusjob.Service
                 throw new ErrorException(ErrorCode.COMPANY_NOT_FOUND);
 
             }
+            if(_jobRepository.IsJobTitleExists(request.CompanyUuid,request.Title)!=null)
+            {
+                throw new ErrorException(ErrorCode.JOB_TITLE_EXISTS);
+            }
             var newJob = new Job
             {
                 CompanyUuid = request.CompanyUuid,
@@ -142,11 +146,16 @@ namespace apicampusjob.Service
             var oldJob = _jobRepository.GetJobByUuid(request.Uuid);
             if (oldJob == null)
             {
-                throw new ErrorException(ErrorCode.REPORT_NOT_FOUND);
+                throw new ErrorException(ErrorCode.JOB_NOT_FOUND);
             }
+
             if(_companiesRepository.GetCompaniesInforbyUuid(request.CompanyUuid) == null)
             {
                 throw new ErrorException(ErrorCode.COMPANY_NOT_FOUND);
+            }
+            if (_jobRepository.IsJobTitleExists(request.CompanyUuid, request.Title) != null)
+            {
+                throw new ErrorException(ErrorCode.JOB_TITLE_EXISTS);
             }
             oldJob.CompanyUuid = request.CompanyUuid;
             oldJob.Title = request.Title;

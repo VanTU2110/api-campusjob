@@ -20,6 +20,9 @@ namespace apicampusjob.Service
         BaseResponseMessage<StudentDTO> GetDetailStudent(string Useruuid);
         BaseResponseMessage<StudentDTO> GetDetailStudentByStudentUuid(string Studentuuid);
         BaseResponseMessagePage<Student_Response> GetPageListStudent(GetPageListStudent request);
+        BaseResponseMessagePage<StudentDTO> SuggestStudentsForJob(SuggestStudentsForJob request);
+
+
     }
     public class StudentService : BaseService, IStudentService
     {
@@ -75,7 +78,7 @@ namespace apicampusjob.Service
             }
             return response;
         }
-
+       
         public BaseResponse InsertStudent(UpsertStudentRequest student)
         {
             var existingUser = _userRepository.GetUserByUuid(student.UserUuid);
@@ -130,5 +133,27 @@ namespace apicampusjob.Service
             _studentRepository.UpdateItem(student);
             return response;
         }
+        public BaseResponseMessagePage<StudentDTO> SuggestStudentsForJob(SuggestStudentsForJob request)
+        {
+            var response = new BaseResponseMessagePage<StudentDTO>();
+            var students = _studentRepository.GetSuggestedStudentsForJob(request);
+            
+            int count = students.Count();
+            if (students != null && count > 0)
+            {
+                var result = students.TakePage(request.Page, request.PageSize);
+                var lstStudentDTO = _mapper.Map<List<StudentDTO>>(result);
+
+                response.Data.Items = lstStudentDTO;
+                response.Data.Pagination = new Paginations()
+                {
+                    TotalPage = result.TotalPages,
+                    TotalCount = result.TotalCount,
+                };
+            }
+            return response;
+        }
+
+
     }
 }

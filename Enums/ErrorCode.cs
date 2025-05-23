@@ -73,5 +73,22 @@ namespace apicampusjob.Enums
         CANNOT_CANCEL_APPLICATION,
         CONVERSATION_NOT_FOUND,
         NO_CHANGE,
+
+        [Description("Không tìm thấy mã OTP. Vui lòng gửi lại OTP.")]
+        OTP_NOT_FOUND,
+
+        [Description("Mã OTP đã hết hạn. Vui lòng gửi lại OTP.")]
+        OTP_EXPIRED,
+
+        [Description("Mã OTP không chính xác.")]
+        OTP_INVALID,
+        [Description("Skill này đã tồn tại")]
+        JOBSKILL_EXISTS,
+        [Description("Tên công việc đã tồn tại, vui lòng đặt tên khác")]
+        JOB_TITLE_EXISTS
+            ,
+        [Description("Không tìm thấy công việc")]
+        JOB_NOT_FOUND,
+
     }
 }

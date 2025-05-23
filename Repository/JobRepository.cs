@@ -13,6 +13,7 @@ namespace apicampusjob.Repository
         Job GetJobByUuid (string uuid);
         List<Job> GetJobBySkill(SearchJobBySkillRequest request);
         List<Job> GetJobBySchedule (GetJobsByScheduleRequest request);
+        Job IsJobTitleExists(string companyUuid, string jobTitle);
     }
     public class JobRepository : BaseRepository, IJobRepository
     {
@@ -84,6 +85,11 @@ namespace apicampusjob.Repository
                  .Where(x => string.IsNullOrEmpty(request.CompanyUuid) || x.CompanyUuid == request.CompanyUuid)
                  .Where(x => string.IsNullOrEmpty(request.SalaryType) || x.SalaryType == request.SalaryType)
                  .Where(x=>string.IsNullOrEmpty(request.JobType) || x.JobType == request.JobType).ToList();
+        }
+
+        public Job IsJobTitleExists(string companyUuid, string jobTitle)
+        {
+            return _dbContext.Job.FirstOrDefault(x => x.CompanyUuid == companyUuid && x.Title == jobTitle);
         }
     }
 }

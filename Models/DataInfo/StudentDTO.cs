@@ -18,5 +18,11 @@
         public List<StudentSkillDTO> ListSkill { get; set; } = [];
 
     }
+    public class StudentSuggestDTO : StudentDTO
+    {
+        public int MatchedSkillCount { get; set; }
+        public int MatchedScheduleCount { get; set; }
+        public int MatchingScore { get; set; } // điểm tổng hợp nếu cần
+    }
 
 }

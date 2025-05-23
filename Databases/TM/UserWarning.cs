@@ -15,5 +15,5 @@ public partial class UserWarning
 
     public string Messages { get; set; } = null!;
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 }

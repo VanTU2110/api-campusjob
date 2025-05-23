@@ -28,7 +28,7 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
-        [HttpPost("delete-jobskill")]
+        [HttpPost("delete-job-skill")]
         [DbpCert]
         public IActionResult DeleteJobSKill([FromBody] UuidRequest request)
         {

@@ -13,6 +13,7 @@ namespace apicampusjob.Service
     {
         BaseResponse InsertStudentSkill(UpsertStudentSkillRequest request);
         BaseResponse DeleteStudentSkill(string uuid);
+        BaseResponseMessageItem<StudentSkillDTO> GetListStudentSkill(GetListStudentSkillByStudentUuid request);
     }
     public class StudentSkillService : BaseService, IStudentSkillService
     {
@@ -40,21 +41,44 @@ namespace apicampusjob.Service
             });
         }
 
+        public BaseResponseMessageItem<StudentSkillDTO> GetListStudentSkill(GetListStudentSkillByStudentUuid request)
+        {
+            var response = new BaseResponseMessageItem<StudentSkillDTO>();
+            var student = _studentRepository.GetStudentInforByStudentUuid(request.studentUuid);
+            if (student == null )
+            {
+                throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
+            }
+            var studentskill =_studentSkillRepository.GetListStudentSkillByStudentUuid(request);
+            if (studentskill == null )
+            {
+                throw new ErrorException(ErrorCode.STUDENTSKILL_NOT_FOUND);
+            }
+            var studentskillDTO = _mapper.Map<List<StudentSkillDTO>>(studentskill);
+            response.Data = studentskillDTO;
+            return response;
+
+        }
+
         public BaseResponse InsertStudentSkill(UpsertStudentSkillRequest request)
         {
-            if (_studentRepository.GetStudentInforByStudentUuid(request.Student_Uuid) == null)
+            if (_studentRepository.GetStudentInforByStudentUuid(request.studentUuid) == null)
             {
                 throw new ErrorException(ErrorCode.STUDENT_NOT_FOUND);
 
             }
-            if(_skillRepository.GetSkillDetailByUuid(request.Skill_Uuid) == null)
+            if(_skillRepository.GetSkillDetailByUuid(request.skillUuid) == null)
             {
                 throw new ErrorException(ErrorCode.SKILL_NOT_FOUND);
             }
+            if(_studentSkillRepository.IsStudentSkillExists(request.studentUuid,request.skillUuid)!=null)
+            {
+                throw new ErrorException(ErrorCode.JOBSKILL_EXISTS);
+            }
             var newStudentSkill = new StudentSkill
             {
-                StudentUuid = request.Student_Uuid,
-                SkillUuid = request.Skill_Uuid,
+                StudentUuid = request.studentUuid,
+                SkillUuid = request.skillUuid,
                 Proficiency = request.Proficiency,
             };
             return ExecuteInTransaction(() =>

@@ -52,6 +52,10 @@ namespace apicampusjob.Service
             {
                 throw new ErrorException(ErrorCode.SKILL_NOT_FOUND);
             }
+            if (_jobSkillRepository.IsJobSkillExists(request.JobUuid, request.SkillUuid) != null)
+            {
+                throw new ErrorException(ErrorCode.JOBSKILL_EXISTS);
+            }
             var newJobSkill = new JobSkill
             {
                 JobUuid = request.JobUuid,

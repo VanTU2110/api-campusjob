@@ -80,5 +80,21 @@ namespace apicampusjob.Controller
                 return Ok(response);
             }, _context);
         }
+        /// <summary>
+        /// Gợi ý danh sách sinh viên phù hợp với một công việc
+        /// </summary>
+        [HttpPost("suggest-students-for-job")]
+        [DbpCert]
+        [SwaggerResponse(200, type: typeof(BaseResponseMessage<List<StudentDTO>>), description: "Danh sách sinh viên phù hợp với job")]
+        public async Task<IActionResult> SuggestStudentsForJob([FromBody] SuggestStudentsForJob request)
+        {
+            return ProcessRequest((token) =>
+            {
+                var response = _studentService.SuggestStudentsForJob(request);
+                return Ok(response);
+            }, _context);
+        }
+
+
     }
 }

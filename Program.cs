@@ -66,7 +66,8 @@ builder.Services.AddSwaggerGen(opt =>
                     "http://127.0.0.1:5500",        // Cho file HTML local
                     "http://192.168.0.111:5173"  ,
                     "http://localhost:8888",
-                    "http://192.168.0.108:5173"
+                    "http://192.168.0.108:5173",
+                    "http://192.168.1.14:5173"
                 // IP local nếu cần
                 )  // Trong môi trường phát triển, hoặc danh sách cụ thể trong sản xuất
                    .AllowAnyMethod()
